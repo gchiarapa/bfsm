@@ -1,0 +1,98 @@
+<configuration>
+	<logger name="com.zaxxer.hikari.pool.PoolBase" level="ERROR" />
+	<logger name="com.zaxxer.hikari.pool.HikariPool" level="ERROR" />
+	<logger name="com.zaxxer.hikari.HikariDataSource" level="ERROR" />
+	<logger name="org.apache" level="ERROR" />
+	<logger name="httpclient" level="ERROR" />
+	<logger name="c.n.d.s.r.aws.ConfigClusterResolver" level="ERROR" />
+	<logger name="o.s.b.a.e.jmx.JmxEndpointExporter" level="ERROR" />
+	<logger name="o.s.j.e.a.AnnotationMBeanExporte" level="ERROR" />
+	<logger name="o.s.s.c.ThreadPoolTaskExecutor" level="ERROR" />
+	<logger name="o.a.h.c.p.RequestProxyAuthentication" level="ERROR" />
+	<logger name="org.apache.http.wire" level="ERROR" />
+	
+	<logger name="org.apache.http.headers" level="ERROR" />
+	<logger name="c.n.d.s.t.j.AbstractJerseyEurekaHttpClient" level="ERROR" />
+	<logger name="c.n.d.s.MonitoredConnectionManager" level="ERROR" />
+	<logger name="o.a.coyote.http11.Http11NioProtocol" level="ERROR" />
+	<logger name="o.a.catalina.core.StandardService" level="ERROR" />
+	<logger name="c.netflix.discovery.DiscoveryClient" level="ERROR" />
+	<logger name="o.a.h.i.conn.DefaultClientConnection" level="ERROR" />
+	<logger name="c.n.d.shared.NamedConnectionPool" level="ERROR" />
+	<logger name="sun.rmi.*" level="ERROR" />
+	
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+<!-- 	<springProperty scope="context" name="logstashServerName" source="spring.logstash.server"/> -->
+<!-- 	<springProperty scope="context" name="logstashServerPort" source="spring.logstash.port"/> -->
+	
+<!-- 	<appender name="stash"  -->
+<!-- 		class="net.logstash.logback.appender.LogstashTcpSocketAppender"> -->
+<!-- 		<destination>${logstashServerName}:${logstashServerPort}</destination> -->
+<!-- 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder"> -->
+<!-- 			<providers> -->
+<!-- 				<timestamp> -->
+<!-- 					<timeZone>America/Sao_Paulo</timeZone> -->
+<!-- 				</timestamp> -->
+<!-- 				<version/> -->
+<!-- 				<logLevel/> -->
+<!-- 				<message/> -->
+<!-- 				<loggerName/> -->
+<!-- 				<threadName/> -->
+<!-- 				<context/> -->
+<!-- 				<mdc> -->
+
+<!-- 					<excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName> -->
+<!-- 					<excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName> -->
+<!-- 					<excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName> -->
+<!-- 					<excludeMdcKeyName>X-Span-Export</excludeMdcKeyName> -->
+<!-- 				</mdc> -->
+<!-- 				<stackTrace/> -->
+<!-- 			</providers> -->
+<!-- 		</encoder> -->
+<!-- 	</appender> -->
+	
+	<!-- <appender name="FILE1" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<file>result.log</file> <encoder> <pattern>%msg%n</pattern> </encoder> <rollingPolicy 
+		class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"> <fileNamePattern>app-%d{yyyy-MM-dd}.%i.log</fileNamePattern> 
+		        <maxFileSize>10MB</maxFileSize>             <maxHistory>30</maxHistory> 
+		        <totalSizeCap>1GB</totalSizeCap> </rollingPolicy> </appender> -->
+	<appender name="FILEOUT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/console.log</file>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${springAppName},%C, %M, %F:%L] %logger{36} - %msg%n</pattern>
+		</encoder>
+		
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- daily rollover inferred from the file name -->
+			<fileNamePattern>log/console-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>100MB</maxFileSize>
+			<maxHistory>15</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %boldGreen([${springAppName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}]) %cyan(%logger{36}) - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- <logger name="com.amdocs.oss.inventory.configuration.LoggingFilter" 
+		level="INFO"> <appender-ref ref="FILE1" /> </logger> -->
+
+	-
+	<root level="DEBUG">
+		<appender-ref ref="FILEOUT" />
+<!-- 		<appender-ref ref="stash" /> -->
+	</root>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>
