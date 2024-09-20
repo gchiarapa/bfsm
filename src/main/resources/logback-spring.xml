@@ -88,7 +88,7 @@
 	-
 	<root level="DEBUG">
 		<appender-ref ref="FILEOUT" />
-<!-- 		<appender-ref ref="stash" /> -->
+ 		<appender-ref ref="STDOUT" /> 
 	</root>
 
 	<root level="INFO">

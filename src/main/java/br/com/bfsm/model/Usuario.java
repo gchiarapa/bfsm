@@ -3,14 +3,18 @@ package br.com.bfsm.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bfsm.usuario.AtualizaUsuario;
+import br.com.bfsm.usuario.DetalhesUsuario;
+import br.com.bfsm.usuario.UsuarioCadastro;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 @Data
@@ -18,19 +22,36 @@ import lombok.Data;
 @Table(name = "api_usuario", schema = "bank")
 public class Usuario {
 	
+	public Usuario(@Valid UsuarioCadastro cadastroUsuario) {
+		this.login = cadastroUsuario.login();
+		this.senha = cadastroUsuario.senha();
+	}
+
+	public Usuario(AtualizaUsuario usuarioAtualizacao) {
+		this.id = usuarioAtualizacao.id();
+		this.login = usuarioAtualizacao.login();
+	}
+	
+	public Usuario(DetalhesUsuario usuarioDetalhes) {
+		this.login = usuarioDetalhes.login();
+	}
+	
+	public Usuario() {
+
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Integer id;
+	Long id;
 	
-	String usuario;
+	String login;
 	
 	String senha;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	    @JoinTable(name = "api_usuario_permissoes", schema = "bank"
-//        ,joinColumns = @JoinColumn(name = "usuario_id"),
-//        inverseJoinColumns = @JoinColumn(name = "permissao_id"
-	    )
+	@ManyToMany
+	@JoinTable(name = "api_usuario_permissoes", schema = "bank",
+	joinColumns = @JoinColumn(name = "usuario_id"),
+	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissoes> roles = new ArrayList<>();
 
 }

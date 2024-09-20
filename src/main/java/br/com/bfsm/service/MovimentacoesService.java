@@ -1,5 +1,7 @@
 package br.com.bfsm.service;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,57 @@ public class MovimentacoesService {
 			status = "NOK";
 		}
 		return status;
+	}
+
+	public Optional<Movimentacoes> buscarMovimentacaoPeloId(Long movimentacaoId) {
+		
+		Optional<Movimentacoes> movimentacao = java.util.Optional.empty();
+		try {
+		movimentacao = movimentacoesRepo.findById(movimentacaoId);
+		return movimentacao;
+		} catch (Exception e) {
+			log.error("Erro para localizar movimentacao: " + e.getMessage());
+			return movimentacao;
+		}
+	}
+
+	public String atualizar(Movimentacoes movimentacao) {
+		
+		String status = "";
+		try {
+			boolean existsById = movimentacoesRepo.existsById(movimentacao.getId());
+			if (existsById) {
+				movimentacoesRepo.save(movimentacao);
+				log.debug("Movimentacao atualizado com sucesso!");
+				status = "OK";				
+			} else {
+				log.debug("movimentacao não localizada!");
+				status = "404";
+			}
+		} catch (Exception e) {
+			log.error("Erro para atualizar movimentacao: " + e.getMessage());
+			status = "NOK";
+		}
+		
+		return status;
+	}
+
+	public String removerPeloId(Long movimentacaoId) {
+		String status = "";
+		
+		try {
+		boolean exists = movimentacoesRepo.existsById(movimentacaoId);
+		if(exists) {
+			movimentacoesRepo.deleteById(movimentacaoId);
+			return status = "OK";
+		} else {
+			log.debug("Movimentacao não localizada !");			
+			return status = "404";
+		}
+		} catch (Exception e) {
+			log.error("Erro para remover Movimentacao: " + e.getMessage());
+			return status = e.getMessage();
+		}
 	}
 
 }

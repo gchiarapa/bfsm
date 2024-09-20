@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-	
+
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		        http
@@ -24,7 +24,8 @@ public class WebSecurityConfig {
 	            )
 	            .logout((logout) -> logout.permitAll())
 	            .csrf().disable();
-		
+//		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
 		return http.build();
 	}
 
