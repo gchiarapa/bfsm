@@ -1,10 +1,9 @@
 package br.com.bfsm.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import br.com.bfsm.domain.usuario.Usuario;
@@ -13,6 +12,6 @@ import br.com.bfsm.domain.usuario.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
 	@Query("select a from Usuario a where login = :login")
-	Optional<Usuario> buscarUsuarioPeloLogin(@Param("login") String login);
+	UserDetails findByLogin(@Param("login") String login);
 
 }

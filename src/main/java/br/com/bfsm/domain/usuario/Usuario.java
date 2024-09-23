@@ -1,7 +1,12 @@
 package br.com.bfsm.domain.usuario;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.bfsm.domain.permissao.Permissao;
 import jakarta.persistence.Entity;
@@ -18,7 +23,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "api_usuario", schema = "bank")
-public class Usuario {
+public class Usuario implements UserDetails {
 	
 	public Usuario(@Valid UsuarioCadastro cadastroUsuario) {
 		this.login = cadastroUsuario.login();
@@ -42,6 +47,7 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	
+	
 	String login;
 	
 	String senha;
@@ -51,5 +57,23 @@ public class Usuario {
 	joinColumns = @JoinColumn(name = "usuario_id"),
 	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> roles = new ArrayList<>();
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return List.of(new SimpleGrantedAuthority("API_ROLE"));
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.login;
+	}
 
 }

@@ -1,4 +1,4 @@
-package br.com.bfsm.infra;
+package br.com.bfsm.infra.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

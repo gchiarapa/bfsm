@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +40,8 @@ public class UsuarioController {
 			
 		try {
 			log.debug("Verificando se o login " +cadastroUsuario.login() + " existe" );
-			Optional<Usuario> login = usuarioService.buscarUsuarioPeloLogin(cadastroUsuario.login());
-			if(login.isEmpty()) {
+			UserDetails login = usuarioService.buscarUsuarioPeloLogin(cadastroUsuario.login());
+			if(login == null) {
 				Usuario novoUsuario = new Usuario(cadastroUsuario);
 				novoUsuario.setLogin(cadastroUsuario.login());
 				novoUsuario.setSenha(new BCryptPasswordEncoder().encode(cadastroUsuario.senha()));

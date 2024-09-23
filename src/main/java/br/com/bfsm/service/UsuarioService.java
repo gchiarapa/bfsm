@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import br.com.bfsm.domain.usuario.Usuario;
@@ -35,11 +36,11 @@ public class UsuarioService {
 		
 	}
 	
-	public Optional<Usuario> buscarUsuarioPeloLogin(String login) {
+	public UserDetails buscarUsuarioPeloLogin(String login) {
 		
-		Optional<Usuario> loginEncontrado = java.util.Optional.empty();
+		UserDetails loginEncontrado = null;
 		try {
-			loginEncontrado = usuarioRepo.buscarUsuarioPeloLogin(login);
+			loginEncontrado = usuarioRepo.findByLogin(login);
 			log.debug("usuario cadastrado com sucesso!");
 		} catch (Exception e) {
 			log.error("Erro para procurar usuario: " + e.getMessage());
