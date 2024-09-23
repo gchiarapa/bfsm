@@ -1,4 +1,4 @@
-package br.com.bfsm.cliente;
+package br.com.bfsm.domain.cliente;
 
 public record AtualizaCliente(
 		

@@ -1,19 +1,23 @@
-package br.com.bfsm.movimentacoes;
+package br.com.bfsm.domain.movimentacao;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotNull;
 
-public record MovimentacoesDadosCadastro(
+
+public record DadosCadastroMovimentacao(
 		
+		@NotNull
 		String tipo,
 		
 		@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 		LocalDateTime data,
-		
+		@NotNull
 		String valor,
 		
+		@NotNull
 		Long clienteId) {
 	
 	

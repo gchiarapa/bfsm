@@ -1,7 +1,5 @@
-package br.com.bfsm.model;
+package br.com.bfsm.domain.cliente;
 
-import br.com.bfsm.cliente.AtualizaCliente;
-import br.com.bfsm.cliente.CadastroCliente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

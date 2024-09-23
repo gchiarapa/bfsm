@@ -1,4 +1,4 @@
-package br.com.bfsm.usuario;
+package br.com.bfsm.domain.usuario;
 
 public record AtualizaUsuario(
 		

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.bfsm.model.Movimentacoes;
+import br.com.bfsm.domain.movimentacao.Movimentacao;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.repository.MovimentacoesRepository;
 
@@ -22,7 +22,7 @@ public class MovimentacoesService {
 	
 	private static final Logger log = LoggerFactory.getLogger(MovimentacoesService.class);
 	
-	public String salvarMovimentacao(Movimentacoes movimentacoes) {
+	public String salvarMovimentacao(Movimentacao movimentacoes) {
 		
 		String status = "";
 		try {
@@ -36,9 +36,9 @@ public class MovimentacoesService {
 		return status;
 	}
 
-	public Optional<Movimentacoes> buscarMovimentacaoPeloId(Long movimentacaoId) {
+	public Optional<Movimentacao> buscarMovimentacaoPeloId(Long movimentacaoId) {
 		
-		Optional<Movimentacoes> movimentacao = java.util.Optional.empty();
+		Optional<Movimentacao> movimentacao = java.util.Optional.empty();
 		try {
 		movimentacao = movimentacoesRepo.findById(movimentacaoId);
 		return movimentacao;
@@ -48,7 +48,7 @@ public class MovimentacoesService {
 		}
 	}
 
-	public String atualizar(Movimentacoes movimentacao) {
+	public String atualizar(Movimentacao movimentacao) {
 		
 		String status = "";
 		try {

@@ -1,6 +1,4 @@
-package br.com.bfsm.usuario;
-
-import br.com.bfsm.model.Usuario;
+package br.com.bfsm.domain.usuario;
 
 public record DetalhesUsuario(
 		String login

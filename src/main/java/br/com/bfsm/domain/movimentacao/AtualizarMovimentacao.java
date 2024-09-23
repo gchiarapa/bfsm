@@ -1,8 +1,8 @@
-package br.com.bfsm.movimentacao;
+package br.com.bfsm.domain.movimentacao;
 
 import java.time.LocalDateTime;
 
-import br.com.bfsm.model.Cliente;
+import br.com.bfsm.domain.cliente.Cliente;
 
 public record AtualizarMovimentacao(
 		Long id,

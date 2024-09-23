@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.bfsm.model.Cliente;
+import br.com.bfsm.domain.cliente.Cliente;
 import br.com.bfsm.repository.ClienteRepository;
 
 @Service

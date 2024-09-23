@@ -1,11 +1,9 @@
-package br.com.bfsm.model;
+package br.com.bfsm.domain.usuario;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bfsm.usuario.AtualizaUsuario;
-import br.com.bfsm.usuario.DetalhesUsuario;
-import br.com.bfsm.usuario.UsuarioCadastro;
+import br.com.bfsm.domain.permissao.Permissao;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -52,6 +50,6 @@ public class Usuario {
 	@JoinTable(name = "api_usuario_permissoes", schema = "bank",
 	joinColumns = @JoinColumn(name = "usuario_id"),
 	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-	private List<Permissoes> roles = new ArrayList<>();
+	private List<Permissao> roles = new ArrayList<>();
 
 }

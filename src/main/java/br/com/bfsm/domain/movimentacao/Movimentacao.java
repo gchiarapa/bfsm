@@ -1,9 +1,8 @@
-package br.com.bfsm.model;
+package br.com.bfsm.domain.movimentacao;
 
 import java.time.LocalDateTime;
 
-import br.com.bfsm.movimentacao.AtualizarMovimentacao;
-import br.com.bfsm.movimentacoes.MovimentacoesDadosCadastro;
+import br.com.bfsm.domain.cliente.Cliente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,15 +16,15 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "movimentacoes", schema = "bank")
-public class Movimentacoes {
+public class Movimentacao {
 	
-	public Movimentacoes(@Valid MovimentacoesDadosCadastro movimentacoesDados) {
+	public Movimentacao(@Valid DadosCadastroMovimentacao movimentacoesDados) {
 		this.data = movimentacoesDados.data();
 		this.tipo = movimentacoesDados.tipo();
 		this.valor = movimentacoesDados.valor();
 	}
 
-	public Movimentacoes(AtualizarMovimentacao movimentacaoAtualizacao) {
+	public Movimentacao(AtualizarMovimentacao movimentacaoAtualizacao) {
 		this.id = movimentacaoAtualizacao.id();
 		this.data = movimentacaoAtualizacao.data();
 		this.tipo = movimentacaoAtualizacao.tipo();

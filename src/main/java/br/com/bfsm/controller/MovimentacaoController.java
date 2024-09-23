@@ -17,21 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.bfsm.cliente.CadastroCliente;
-import br.com.bfsm.cliente.DetalhesCliente;
-import br.com.bfsm.model.Cliente;
-import br.com.bfsm.model.Movimentacoes;
-import br.com.bfsm.movimentacao.AtualizarMovimentacao;
-import br.com.bfsm.movimentacao.DetalhesMovimentacao;
-import br.com.bfsm.movimentacoes.DetalhesMovimentacoes;
-import br.com.bfsm.movimentacoes.MovimentacoesDadosCadastro;
+import br.com.bfsm.domain.cliente.Cliente;
+import br.com.bfsm.domain.movimentacao.AtualizarMovimentacao;
+import br.com.bfsm.domain.movimentacao.DadosCadastroMovimentacao;
+import br.com.bfsm.domain.movimentacao.DetalhesMovimentacao;
+import br.com.bfsm.domain.movimentacao.Movimentacao;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.service.MovimentacoesService;
 
 
 @RestController
 @RequestMapping("/movimentacoes")
-public class MovimentacoesController {
+public class MovimentacaoController {
 	
 	@Autowired
 	MovimentacoesService movimentacoesService;
@@ -39,16 +36,16 @@ public class MovimentacoesController {
 	@Autowired
 	ClienteRepository clienteRepo;
 	
-	private static final Logger log = LoggerFactory.getLogger(MovimentacoesController.class);
+	private static final Logger log = LoggerFactory.getLogger(MovimentacaoController.class);
 	
 	@PostMapping(value = "/adicionar", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity cadastrar(@RequestBody MovimentacoesDadosCadastro movimentacoesDados, 
+	public ResponseEntity cadastrar(@RequestBody DadosCadastroMovimentacao movimentacoesDados, 
 			UriComponentsBuilder uriBuilder) {
 		
 		log.debug("Valores recebidos: [Tipo] [Data] [Valor] [IdCliente]" + movimentacoesDados.toString());
 		
 		Cliente cliente = new Cliente();
-		Movimentacoes movimentacoes = new Movimentacoes(movimentacoesDados);
+		Movimentacao movimentacoes = new Movimentacao(movimentacoesDados);
 		
 		cliente.setId(movimentacoesDados.clienteId());
 
@@ -58,7 +55,7 @@ public class MovimentacoesController {
 		
 		if(status == "OK") {
 			var uri = uriBuilder.path("/movimentacoes/{id}").buildAndExpand(movimentacoes.getId()).toUri();
-			return ResponseEntity.created(uri).body(new DetalhesMovimentacoes(movimentacoes));
+			return ResponseEntity.created(uri).body(new DetalhesMovimentacao(movimentacoes));
 		} else {
 			return ResponseEntity.internalServerError().build();			
 		}
@@ -69,7 +66,7 @@ public class MovimentacoesController {
 		
 		log.info("Iniciando busca do id: [id] " + movimentacaoId);
 		
-		Optional<Movimentacoes> buscarMovimentacaoPeloId = movimentacoesService.buscarMovimentacaoPeloId(movimentacaoId);
+		Optional<Movimentacao> buscarMovimentacaoPeloId = movimentacoesService.buscarMovimentacaoPeloId(movimentacaoId);
 		
 		if(buscarMovimentacaoPeloId.isPresent()) {
 			log.info("O id: [id] " + movimentacaoId + " foi localizado");
@@ -104,7 +101,7 @@ public class MovimentacoesController {
 //		log.info("Tentativa de adicionar cliente - Sessão: {}", SecurityContextHolder.getContext().getAuthentication());
 		log.debug("Valores recebidos: [nome] [endereco] " + movimentacaoAtualizacao.toString());
 		
-		Movimentacoes movimentacao = new Movimentacoes(movimentacaoAtualizacao);
+		Movimentacao movimentacao = new Movimentacao(movimentacaoAtualizacao);
 		
 		String status = movimentacoesService.atualizar(movimentacao);
 		

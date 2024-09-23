@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.bfsm.cliente.AtualizaCliente;
-import br.com.bfsm.cliente.CadastroCliente;
-import br.com.bfsm.cliente.DetalhesCliente;
-import br.com.bfsm.model.Cliente;
+import br.com.bfsm.domain.cliente.AtualizaCliente;
+import br.com.bfsm.domain.cliente.CadastroCliente;
+import br.com.bfsm.domain.cliente.Cliente;
+import br.com.bfsm.domain.cliente.DetalhesCliente;
 import br.com.bfsm.service.ClienteService;
 import jakarta.validation.Valid;
 

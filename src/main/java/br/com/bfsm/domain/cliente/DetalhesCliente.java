@@ -1,6 +1,4 @@
-package br.com.bfsm.cliente;
-
-import br.com.bfsm.model.Cliente;
+package br.com.bfsm.domain.cliente;
 
 public record DetalhesCliente(
 		

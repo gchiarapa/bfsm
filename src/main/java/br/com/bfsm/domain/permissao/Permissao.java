@@ -1,4 +1,4 @@
-package br.com.bfsm.model;
+package br.com.bfsm.domain.permissao;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "api_permissoes", schema = "bank")
-public class Permissoes {
+public class Permissao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
