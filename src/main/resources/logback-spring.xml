@@ -72,6 +72,23 @@
 			<totalSizeCap>3GB</totalSizeCap>
 		</rollingPolicy>
 	</appender>
+	
+		<appender name="FILEOUTDEBUG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/console_debug.log</file>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${springAppName},%C, %M, %F:%L] %logger{36} - %msg%n</pattern>
+		</encoder>
+		
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- daily rollover inferred from the file name -->
+			<fileNamePattern>log/console_debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>100MB</maxFileSize>
+			<maxHistory>15</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
 
 
 	<appender name="STDOUT"
@@ -87,12 +104,13 @@
 
 	-
 	<root level="DEBUG">
-		<appender-ref ref="FILEOUT" />
+		<appender-ref ref="FILEOUTDEBUG" />
  		<appender-ref ref="STDOUT" /> 
 	</root>
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILEOUT" />
 	</root>
 
 </configuration>

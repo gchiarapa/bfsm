@@ -37,9 +37,28 @@ public class TokenService {
 		        .sign(algoritmo);
 		    log.info("Token gerado com sucesso ");
 		} catch (JWTCreationException exception){
-		    log.error("Erro para gerar token " + exception.getMessage());
+			log.error("Erro para gerar token " + exception.getMessage());
+			throw new RuntimeException("Erro para gerar token");
 		}
 		return token;
+	}
+	
+	public String getSubject(String tokenJWT) {
+		
+		String tokenCheck = "";
+		
+		try {
+			var algoritmo = Algorithm.HMAC256(secret);
+			tokenCheck = JWT.require(algoritmo)
+					.withIssuer("bfsm")
+					.build()
+					.verify(tokenJWT)
+					.getSubject();
+		} catch (Exception e) {
+			log.error("Token inválido ou expirado" + e.getMessage());
+			throw new RuntimeException("Token inválido ou expirado");
+		}
+		return tokenCheck;
 	}
 
 	private Instant dataExpiracao() {

@@ -22,7 +22,7 @@ public class ClienteService {
 		String status = "";
 		try {
 			clienteRepo.save(cliente);
-			log.debug("cliente cadastrado com sucesso!");
+			log.info("cliente cadastrado com sucesso!");
 			status = "OK";
 		} catch (Exception e) {
 			log.error("Erro para cadastrar cliente: " + e.getMessage());
@@ -55,7 +55,7 @@ public class ClienteService {
 				clienteRepo.deleteById(clienteId);
 				return status = "OK";
 			} else {
-				log.debug("cliente não localizado !");
+				log.info("cliente não localizado !");
 				return status = "404";
 			}
 		} catch (Exception e) {
@@ -72,10 +72,10 @@ public class ClienteService {
 			boolean existsById = clienteRepo.existsById(cliente.getId());
 			if (existsById) {
 				clienteRepo.save(cliente);
-				log.debug("cliente atualizado com sucesso!");
+				log.info("cliente atualizado com sucesso!");
 				status = "OK";				
 			} else {
-				log.debug("cliente não localizado!");
+				log.info("cliente não localizado!");
 				status = "404";
 			}
 		} catch (Exception e) {

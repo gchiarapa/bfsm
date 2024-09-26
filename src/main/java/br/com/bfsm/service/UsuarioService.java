@@ -1,15 +1,24 @@
 package br.com.bfsm.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.bfsm.domain.usuario.DetalhesUsuario;
 import br.com.bfsm.domain.usuario.Usuario;
+import br.com.bfsm.domain.usuario.UsuarioCadastro;
 import br.com.bfsm.repository.UsuarioRepository;
+import br.com.bfsm.usuario.DetalhesCadastroMassivo;
+import br.com.bfsm.usuario.DetalhesUsuarioMassivo;
 
 @Service
 public class UsuarioService {
@@ -23,10 +32,10 @@ public class UsuarioService {
 		
 		String status = "";
 		try {
-			log.debug("Criando usuário: " + usuario.getLogin());
+			log.info("Criando usuário: " + usuario.getLogin());
 			usuarioRepo.save(usuario);
 			status = "OK";
-			log.debug("usuario cadastrado com sucesso!");
+			log.info("usuario cadastrado com sucesso!");
 		} catch (Exception e) {
 			log.error("Erro para cadastrar usuario: " + e.getMessage());
 			status = "NOK";
@@ -41,7 +50,7 @@ public class UsuarioService {
 		UserDetails loginEncontrado = null;
 		try {
 			loginEncontrado = usuarioRepo.findByLogin(login);
-			log.debug("usuario cadastrado com sucesso!");
+			log.info("usuario cadastrado com sucesso!");
 		} catch (Exception e) {
 			log.error("Erro para procurar usuario: " + e.getMessage());
 		}
@@ -70,7 +79,7 @@ public class UsuarioService {
 				usuarioRepo.deleteById(usuarioId);
 				return status = "OK";
 			} else {
-				log.debug("cliente não localizado !");
+				log.info("cliente não localizado !");
 				return status = "404";
 			}
 		} catch (Exception e) {
@@ -86,10 +95,10 @@ public class UsuarioService {
 			boolean existsById = usuarioRepo.existsById(usuario.getId());
 			if (existsById) {
 				usuarioRepo.save(usuario);
-				log.debug("usuario atualizado com sucesso!");
+				log.info("usuario atualizado com sucesso!");
 				status = "OK";				
 			} else {
-				log.debug("usuario não localizado!");
+				log.info("usuario não localizado!");
 				status = "404";
 			}
 		} catch (Exception e) {
@@ -98,6 +107,61 @@ public class UsuarioService {
 		}
 
 		return status;
+	}
+	
+	public ResponseEntity<DetalhesUsuario> cadastrarUsuario(UsuarioCadastro cadastroUsuario) {
+		
+		try {
+			log.info("Verificando se o login " +cadastroUsuario.login() + " existe");
+			UserDetails login = this.buscarUsuarioPeloLogin(cadastroUsuario.login());
+			if(login == null) {
+				Usuario novoUsuario = new Usuario(cadastroUsuario);
+				novoUsuario.setLogin(cadastroUsuario.login());
+				novoUsuario.setSenha(new BCryptPasswordEncoder().encode(cadastroUsuario.senha()));
+				this.salvarUsuario(novoUsuario);			
+				log.info("o login " + novoUsuario.getLogin() + " foi cadastrado");
+				return ResponseEntity.ok(new DetalhesUsuario(novoUsuario));
+			} else {
+				log.info("o login " + cadastroUsuario.login() + " já existe" );
+				return ResponseEntity.noContent().build();
+			}
+			
+		} catch (Exception e) {
+			log.error("Erro para cadastrar o login " + e.getMessage());
+			return ResponseEntity.internalServerError().build();
+		}
+	}
+
+	public DetalhesCadastroMassivo cadastrarUsuarioMassivo(List<Usuario> listUsuarios) {
+		
+		DetalhesCadastroMassivo cadastroMassivo = new DetalhesCadastroMassivo();
+		List<DetalhesUsuarioMassivo> listaUsuario = new ArrayList<DetalhesUsuarioMassivo>();
+		try {
+			for (int i = 0; i < listUsuarios.size(); i++) {
+				UsuarioCadastro cadastroUsuario = new UsuarioCadastro(listUsuarios.get(i).getLogin(), 
+						listUsuarios.get(i).getSenha());
+				ResponseEntity<DetalhesUsuario> cadastrarUsuario = this.cadastrarUsuario(cadastroUsuario);
+				if(cadastrarUsuario.getStatusCodeValue() == 200) {
+					DetalhesUsuarioMassivo detalhes = new DetalhesUsuarioMassivo();
+					detalhes.setStatus("Login criado com sucesso");
+					detalhes.setLogin(cadastrarUsuario.getBody().login());
+					listaUsuario.add(detalhes);
+					cadastroMassivo.setListaUsuario(listaUsuario);
+				} else if(cadastrarUsuario.getStatusCodeValue() == 204) {
+					DetalhesUsuarioMassivo detalhes = new DetalhesUsuarioMassivo();
+					detalhes.setStatus("Login já existe");
+					detalhes.setLogin(cadastroUsuario.login());
+					listaUsuario.add(detalhes);
+					cadastroMassivo.setListaUsuario(listaUsuario);
+				}
+			}
+			ResponseEntity.ok().body(cadastroMassivo);
+		} catch (Exception e) {
+			log.error("Erro no cadastro massivo de usuario " + e.getMessage());
+		}
+		
+		return cadastroMassivo;
+		
 	}
 
 }

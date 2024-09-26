@@ -38,7 +38,7 @@ public class ClienteController {
 	public ResponseEntity cadatrar(@RequestBody @Valid CadastroCliente cadastroCliente, UriComponentsBuilder uriBuilder) {
 		
 //		log.info("Tentativa de adicionar cliente - Sessão: {}", SecurityContextHolder.getContext().getAuthentication());
-		log.debug("Valores recebidos: [nome] [endereco] " + cadastroCliente.toString());
+		log.info("Valores recebidos: [nome] [endereco] " + cadastroCliente.toString());
 		
 		Cliente cliente = new Cliente(cadastroCliente);
 		
@@ -71,15 +71,15 @@ public class ClienteController {
 	@DeleteMapping("{id}")
 	public ResponseEntity remover(@RequestParam Long clienteId) {
 		
-		log.debug("Iniciando remocao do id: [id] " + clienteId);
+		log.info("Iniciando remocao do id: [id] " + clienteId);
 		
 		String removerPeloId = clienteService.removerPeloId(clienteId);
 		
 		if(removerPeloId == "OK") {
-			log.debug("remocao do id: [id] " + clienteId + " efetuada com sucesso");
+			log.info("remocao do id: [id] " + clienteId + " efetuada com sucesso");
 			return ResponseEntity.noContent().build();
 		} else if(removerPeloId == "404") {
-			log.debug("O id: [id] " + clienteId + " não foi localizado");
+			log.info("O id: [id] " + clienteId + " não foi localizado");
 			return ResponseEntity.notFound().build();
 		} else {
 			return ResponseEntity.internalServerError().build();
@@ -90,7 +90,7 @@ public class ClienteController {
 	@PutMapping("/atualizar")
 	public ResponseEntity putMethodName(@RequestBody AtualizaCliente clienteAtualizacao, UriComponentsBuilder uriBuilder) {
 //		log.info("Tentativa de adicionar cliente - Sessão: {}", SecurityContextHolder.getContext().getAuthentication());
-		log.debug("Valores recebidos: [nome] [endereco] " + clienteAtualizacao.toString());
+		log.info("Valores recebidos: [nome] [endereco] " + clienteAtualizacao.toString());
 		
 		Cliente cliente = new Cliente(clienteAtualizacao);
 		

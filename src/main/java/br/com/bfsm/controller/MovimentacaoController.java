@@ -42,7 +42,7 @@ public class MovimentacaoController {
 	public ResponseEntity cadastrar(@RequestBody DadosCadastroMovimentacao movimentacoesDados, 
 			UriComponentsBuilder uriBuilder) {
 		
-		log.debug("Valores recebidos: [Tipo] [Data] [Valor] [IdCliente]" + movimentacoesDados.toString());
+		log.info("Valores recebidos: [Tipo] [Data] [Valor] [IdCliente]" + movimentacoesDados.toString());
 		
 		Cliente cliente = new Cliente();
 		Movimentacao movimentacoes = new Movimentacao(movimentacoesDados);
@@ -80,15 +80,15 @@ public class MovimentacaoController {
 	@DeleteMapping("{id}")
 	public ResponseEntity remover(@RequestParam Long movimentacaoId) {
 		
-		log.debug("Iniciando remocao do id: [id] " + movimentacaoId);
+		log.info("Iniciando remocao do id: [id] " + movimentacaoId);
 		
 		String removerPeloId = movimentacoesService.removerPeloId(movimentacaoId);
 		
 		if(removerPeloId == "OK") {
-			log.debug("remocao do id: [id] " + movimentacaoId + " efetuada com sucesso");
+			log.info("remocao do id: [id] " + movimentacaoId + " efetuada com sucesso");
 			return ResponseEntity.noContent().build();
 		} else if(removerPeloId == "404") {
-			log.debug("O id: [id] " + movimentacaoId + " não foi localizado");
+			log.info("O id: [id] " + movimentacaoId + " não foi localizado");
 			return ResponseEntity.notFound().build();
 		} else {
 			return ResponseEntity.internalServerError().build();
@@ -99,7 +99,7 @@ public class MovimentacaoController {
 	@PutMapping("/atualizar")
 	public ResponseEntity putMethodName(@RequestBody AtualizarMovimentacao movimentacaoAtualizacao, UriComponentsBuilder uriBuilder) {
 //		log.info("Tentativa de adicionar cliente - Sessão: {}", SecurityContextHolder.getContext().getAuthentication());
-		log.debug("Valores recebidos: [nome] [endereco] " + movimentacaoAtualizacao.toString());
+		log.info("Valores recebidos: [nome] [endereco] " + movimentacaoAtualizacao.toString());
 		
 		Movimentacao movimentacao = new Movimentacao(movimentacaoAtualizacao);
 		
