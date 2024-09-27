@@ -34,11 +34,13 @@ import br.com.bfsm.domain.usuario.Usuario;
 import br.com.bfsm.domain.usuario.UsuarioCadastro;
 import br.com.bfsm.service.UsuarioService;
 import br.com.bfsm.usuario.DetalhesCadastroMassivo;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping(path = "/usuario")
+@SecurityRequirement(name = "bearer-key") 
 public class UsuarioController {
 	
 	@Autowired

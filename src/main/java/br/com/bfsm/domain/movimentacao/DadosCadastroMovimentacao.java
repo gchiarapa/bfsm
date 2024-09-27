@@ -12,8 +12,10 @@ public record DadosCadastroMovimentacao(
 		@NotNull
 		String tipo,
 		
+		@NotNull
 		@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 		LocalDateTime data,
+		
 		@NotNull
 		String valor,
 		

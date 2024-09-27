@@ -21,12 +21,14 @@ import br.com.bfsm.domain.cliente.CadastroCliente;
 import br.com.bfsm.domain.cliente.Cliente;
 import br.com.bfsm.domain.cliente.DetalhesCliente;
 import br.com.bfsm.service.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 
 
 @RestController
 @RequestMapping("/cliente")
+@SecurityRequirement(name = "bearer-key")
 public class ClienteController {
 	
 	@Autowired
@@ -88,7 +90,7 @@ public class ClienteController {
 	}
 	
 	@PutMapping("/atualizar")
-	public ResponseEntity putMethodName(@RequestBody AtualizaCliente clienteAtualizacao, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity atualizar(@RequestBody AtualizaCliente clienteAtualizacao, UriComponentsBuilder uriBuilder) {
 //		log.info("Tentativa de adicionar cliente - Sessão: {}", SecurityContextHolder.getContext().getAuthentication());
 		log.info("Valores recebidos: [nome] [endereco] " + clienteAtualizacao.toString());
 		
@@ -105,6 +107,5 @@ public class ClienteController {
 			return ResponseEntity.internalServerError().build();			
 		}
 	}
-	
 
 }

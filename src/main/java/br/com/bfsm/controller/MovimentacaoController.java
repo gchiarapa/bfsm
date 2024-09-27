@@ -24,10 +24,12 @@ import br.com.bfsm.domain.movimentacao.DetalhesMovimentacao;
 import br.com.bfsm.domain.movimentacao.Movimentacao;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.service.MovimentacoesService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
 @RestController
 @RequestMapping("/movimentacoes")
+@SecurityRequirement(name = "bearer-key") 
 public class MovimentacaoController {
 	
 	@Autowired

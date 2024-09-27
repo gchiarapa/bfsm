@@ -2,6 +2,8 @@ package br.com.bfsm.domain.movimentacao;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.bfsm.domain.cliente.Cliente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class Movimentacao {
 	
 	public String tipo;
 	
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 	public
 	LocalDateTime data;
 	

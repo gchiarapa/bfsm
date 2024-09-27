@@ -18,10 +18,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "api_usuario", schema = "bank")
 public class Usuario implements UserDetails {
 	
@@ -39,10 +43,6 @@ public class Usuario implements UserDetails {
 		this.login = usuarioDetalhes.login();
 	}
 	
-	public Usuario() {
-
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
@@ -74,6 +74,11 @@ public class Usuario implements UserDetails {
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return this.login;
+	}
+
+	public Usuario(String login2, String senha2) {
+		this.login = login2;
+		this.senha = senha2;
 	}
 
 }

@@ -11,7 +11,10 @@ import br.com.bfsm.domain.usuario.Usuario;
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
-	@Query("select a from Usuario a where login = :login")
+	@Query("""
+			select a from Usuario a 
+			where login = :login
+			""")
 	UserDetails findByLogin(@Param("login") String login);
 
 }
