@@ -7,7 +7,8 @@ public record AtualizaCliente(
 		@NotNull
 		Long id,
 		String nome,
-		String endereco
+		String endereco,
+		String saldo
 		) {
 
 }

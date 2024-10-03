@@ -8,7 +8,10 @@ public record CadastroCliente(
 		String nome,
 		
 		@NotNull
-		String endereco
+		String endereco,
+		
+		@NotNull
+		String saldo
 		) {
 
 }

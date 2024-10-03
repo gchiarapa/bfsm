@@ -6,11 +6,13 @@ public record DetalhesCliente(
 		
 		String nome,
 		
-		String endereco
+		String endereco,
+		
+		String saldo
 		) {
 
 	public DetalhesCliente(Cliente cliente) {
-		this(cliente.getId(), cliente.getNome(), cliente.getEndereco());
+		this(cliente.getId(), cliente.getNome(), cliente.getEndereco(), cliente.getSaldo());
 	}
 
 }

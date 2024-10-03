@@ -44,13 +44,13 @@ public class ClienteController {
 		
 		Cliente cliente = new Cliente(cadastroCliente);
 		
-		String status = clienteService.salvar(cliente);
+		cliente = clienteService.salvar(cliente);
 		
-		if(status == "OK") {
+		if(cliente != null) {
 			var uri = uriBuilder.path("/cliente/{id}").buildAndExpand(cliente.getId()).toUri();
 			return ResponseEntity.created(uri).body(new DetalhesCliente(cliente));
 		} else {
-			return ResponseEntity.internalServerError().build();			
+			return ResponseEntity.internalServerError().body("Erro para cadastrar cliente");			
 		}
 	}
 	

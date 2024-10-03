@@ -17,19 +17,17 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository clienteRepo;
 
-	public String salvar(Cliente cliente) {
+	public Cliente salvar(Cliente cliente) {
 
-		String status = "";
 		try {
 			clienteRepo.save(cliente);
 			log.info("cliente cadastrado com sucesso!");
-			status = "OK";
+			return cliente;
 		} catch (Exception e) {
 			log.error("Erro para cadastrar cliente: " + e.getMessage());
-			status = "NOK";
+			return null;
 		}
 
-		return status;
 	}
 
 	public Optional<Cliente> buscarClientePeloId(Long clienteId) {

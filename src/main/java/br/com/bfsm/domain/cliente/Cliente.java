@@ -16,6 +16,7 @@ public class Cliente {
 	public Cliente(@Valid CadastroCliente cadastroCliente) {
 		this.nome = cadastroCliente.nome();
 		this.endereco = cadastroCliente.endereco();
+		this.saldo = cadastroCliente.saldo();
 	}
 	
 	public Cliente() {
@@ -26,6 +27,7 @@ public class Cliente {
 		this.id = clienteAtualizacao.id();
 		this.nome = clienteAtualizacao.nome();
 		this.endereco = clienteAtualizacao.endereco();
+		this.saldo = clienteAtualizacao.saldo();
 	}
 
 	@Id
