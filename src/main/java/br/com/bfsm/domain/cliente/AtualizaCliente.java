@@ -8,7 +8,8 @@ public record AtualizaCliente(
 		Long id,
 		String nome,
 		String endereco,
-		String saldo
+		String saldo,
+		int ativo
 		) {
 
 }

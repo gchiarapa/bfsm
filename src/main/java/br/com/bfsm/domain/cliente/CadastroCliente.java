@@ -1,5 +1,6 @@
 package br.com.bfsm.domain.cliente;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record CadastroCliente(
@@ -11,7 +12,10 @@ public record CadastroCliente(
 		String endereco,
 		
 		@NotNull
-		String saldo
+		String saldo,
+		
+		@NotEmpty
+	    int ativo
 		) {
 
 }

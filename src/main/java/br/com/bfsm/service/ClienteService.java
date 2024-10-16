@@ -7,8 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.bfsm.domain.cliente.CadastroCliente;
 import br.com.bfsm.domain.cliente.Cliente;
+import br.com.bfsm.infra.exception.ClienteException;
 import br.com.bfsm.repository.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService {
@@ -17,7 +21,9 @@ public class ClienteService {
 	@Autowired
 	ClienteRepository clienteRepo;
 
-	public Cliente salvar(Cliente cliente) {
+	public Cliente salvar(CadastroCliente cadastroCliente) throws ClienteException {
+		
+		Cliente cliente = new Cliente(cadastroCliente);
 
 		try {
 			clienteRepo.save(cliente);
@@ -25,63 +31,55 @@ public class ClienteService {
 			return cliente;
 		} catch (Exception e) {
 			log.error("Erro para cadastrar cliente: " + e.getMessage());
-			return null;
+			throw new ClienteException("Erro para cadastrar cliente");
 		}
 
 	}
 
-	public Optional<Cliente> buscarClientePeloId(Long clienteId) {
+	public Cliente buscarClientePeloId(Long clienteId, int ativo) throws ClienteException {
 
-		Optional<Cliente> cliente = java.util.Optional.empty();
-		try {
-			cliente = clienteRepo.findById(clienteId);
-			return cliente;
-		} catch (Exception e) {
-			log.error("Erro para localizar cliente: " + e.getMessage());
-			return cliente;
+		Optional<Cliente> clienteExiste = java.util.Optional.empty();
+		Cliente cliente = null;
+		
+		clienteExiste = clienteRepo.findClienteByIdAndAtivo(clienteId, ativo);
+		if(clienteExiste.isPresent()) {
+			return cliente = new Cliente(clienteExiste.get());
+		} else {
+			log.info("cliente não localizado !");
+			throw new EntityNotFoundException("Cliente não localizado!");
 		}
 
 	}
-
-	public String removerPeloId(Long clienteId) {
+	
+	@Transactional
+	public String removerPeloId(Long clienteId) throws ClienteException {
 
 		String status = "";
 
-		try {
-			boolean exists = clienteRepo.existsById(clienteId);
-			if (exists) {
-				clienteRepo.deleteById(clienteId);
-				return status = "OK";
-			} else {
-				log.info("cliente não localizado !");
-				return status = "404";
-			}
-		} catch (Exception e) {
-			log.error("Erro para remover cliente: " + e.getMessage());
-			return status = e.getMessage();
+		boolean exists = clienteRepo.existsById(clienteId);
+		if (exists) {
+//			clienteRepo.deleteById(clienteId);
+			clienteRepo.updateClienteAtivoById((byte) 0, clienteId);
+			return status = "OK";
+		} else {
+			log.info("cliente não localizado !");
+			throw new EntityNotFoundException("Cliente não localizado!");
 		}
 
 	}
 
-	public String atualizar(Cliente cliente) {
+	public Cliente atualizar(Cliente cliente) throws ClienteException, EntityNotFoundException {
 
-		String status = "";
-		try {
-			boolean existsById = clienteRepo.existsById(cliente.getId());
-			if (existsById) {
-				clienteRepo.save(cliente);
-				log.info("cliente atualizado com sucesso!");
-				status = "OK";				
-			} else {
-				log.info("cliente não localizado!");
-				status = "404";
-			}
-		} catch (Exception e) {
-			log.error("Erro para atualizar cliente: " + e.getMessage());
-			status = "NOK";
+		boolean existsById = clienteRepo.existsById(cliente.getId());
+		if (existsById) {
+			clienteRepo.save(cliente);
+			log.info("cliente atualizado com sucesso!");
+			return cliente;
+		} else {
+			log.info("cliente não localizado!");
+			throw new EntityNotFoundException("Cliente não localizado!");
 		}
 
-		return status;
 	}
 
 }

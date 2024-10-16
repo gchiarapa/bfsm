@@ -31,7 +31,7 @@ class UsuarioRepositoryTest {
 		var login = "Gustavo";
 		var senha = "teste";
 		cadastraLogin(login, senha);
-		UserDetails byLogin = usuarioRepo.findByLogin("Gustavo");
+		var byLogin = usuarioRepo.findByLogin("Gustavo");
 		assertThat(byLogin).isNotNull();
 	}
 	
@@ -39,7 +39,7 @@ class UsuarioRepositoryTest {
 	@Test
 	@DisplayName("Faz o filtro por login inexistente no banco")
 	void testFindByLoginNok() {
-		UserDetails byLogin = usuarioRepo.findByLogin("aaa");
+		var byLogin = usuarioRepo.findByLogin("aaa");
 		assertThat(byLogin).isNull();
 	}
 	
@@ -55,7 +55,7 @@ class UsuarioRepositoryTest {
 		Usuario cadastraLogin = cadastraLogin(login, senha);
 		
 		//when or act
-		UserDetails byLogin = usuarioRepo.findByLogin("Gustavo");
+		var byLogin = usuarioRepo.findByLogin("Gustavo");
 		
 		//assert or then
 		assertThat(byLogin).isEqualTo(cadastraLogin);

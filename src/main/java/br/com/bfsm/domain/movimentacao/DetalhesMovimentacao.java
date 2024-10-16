@@ -17,10 +17,13 @@ public record DetalhesMovimentacao(
 		
 		String valor,
 		
-		Cliente cliente) {
+		Cliente cliente,
+		Enum<Moeda> moeda
+		) {
 	
-	public DetalhesMovimentacao(Movimentacao movimentacoes) {
-		this(movimentacoes.id, movimentacoes.tipo, movimentacoes.data, movimentacoes.valor, movimentacoes.cliente);
+	public DetalhesMovimentacao(Movimentacoes movimentacoes) {
+		this(movimentacoes.id, movimentacoes.tipo, movimentacoes.data, 
+				movimentacoes.valor, movimentacoes.cliente, movimentacoes.moeda);
 	}
 
 }

@@ -20,7 +20,10 @@ public record DadosCadastroMovimentacao(
 		String valor,
 		
 		@NotNull
-		Long clienteId) {
+		Long clienteId,
+		
+		String moeda
+		) {
 	
 	
 

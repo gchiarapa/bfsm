@@ -53,6 +53,11 @@ public class TratadorDeErros {
     public ResponseEntity tratarErro400(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Corpo da requisição ausente!");
     }
+    
+    @ExceptionHandler(ClienteException.class)
+    public ResponseEntity erroCadastrarCliente(ClienteException ex) {
+    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro para cadastrar cliente");
+    }
 
 	
 	private record DadosErroValidacao(String campo, String mensagem) {

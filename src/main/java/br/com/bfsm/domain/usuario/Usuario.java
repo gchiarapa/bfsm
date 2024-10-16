@@ -10,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.bfsm.domain.permissao.Permissao;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,7 @@ public class Usuario implements UserDetails {
 	public Usuario(@Valid UsuarioCadastro cadastroUsuario) {
 		this.login = cadastroUsuario.login();
 		this.senha = cadastroUsuario.senha();
+		this.ativo = 1;
 	}
 
 	public Usuario(AtualizaUsuario usuarioAtualizacao) {
@@ -52,27 +55,26 @@ public class Usuario implements UserDetails {
 	
 	String senha;
 	
-	@ManyToMany
+	int ativo;
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "api_usuario_permissoes", schema = "bank",
 	joinColumns = @JoinColumn(name = "usuario_id"),
 	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-	private List<Permissao> roles = new ArrayList<>();
+	private List<Permissao> permissao = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return List.of(new SimpleGrantedAuthority("API_ROLE"));
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return this.senha;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return this.login;
 	}
 

@@ -21,7 +21,9 @@ public record AtualizarMovimentacao(
 		String valor,
 		
 
-		Cliente cliente
+		Cliente cliente,
+		
+		String moeda
 		
 		) {
 

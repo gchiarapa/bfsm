@@ -7,9 +7,10 @@ public record AtualizaUsuario(
 		@NotNull
 		Long id,
 		
-		String login
+		String login,
 		
 //		String senha
+		int ativo
 		) {
 
 }

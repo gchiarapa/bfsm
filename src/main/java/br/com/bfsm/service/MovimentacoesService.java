@@ -1,16 +1,46 @@
 package br.com.bfsm.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import br.com.bfsm.domain.cambio.TaxaCambio;
 import br.com.bfsm.domain.cliente.Cliente;
-import br.com.bfsm.domain.movimentacao.Movimentacao;
+import br.com.bfsm.domain.movimentacao.Movimentacoes;
+import br.com.bfsm.infra.exception.MovimentacoesException;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.repository.MovimentacoesRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class MovimentacoesService {
@@ -20,10 +50,19 @@ public class MovimentacoesService {
 
 	@Autowired
 	ClienteRepository clienteRepo;
+	
+	@Autowired
+	EntityManager entityManager;
+	
+	@Value("${api.exchange.url}")
+	private String exchangeApi;
+	
+	@Value("${api.exchange.accessKey}")
+	private String exchangeApiAcessKey;
 
 	private static final Logger log = LoggerFactory.getLogger(MovimentacoesService.class);
 
-	public String salvarMovimentacao(Movimentacao movimentacoes) {
+	public String salvarMovimentacao(Movimentacoes movimentacoes) throws MovimentacoesException {
 
 		String status = "";
 		try {
@@ -33,14 +72,17 @@ public class MovimentacoesService {
 			status = "OK";
 		} catch (Exception e) {
 			log.error("Erro para cadastrar movimentação: " + e.getMessage());
-			status = "NOK";
+			throw new MovimentacoesException("Erro para cadastrar movimentação: " + e.getMessage());
 		}
 		return status;
 	}
 
-	private void atualizarSaldoCliente(Movimentacao movimentacoes) {
+	private void atualizarSaldoCliente(Movimentacoes movimentacoes) {
 		
 		Optional<Cliente> clientebyId = clienteRepo.findById(movimentacoes.cliente.getId());
+		if(clientebyId.isEmpty()) {
+			throw new EntityNotFoundException("Cliente não localizado!");
+		}
 		Cliente cliente = new Cliente();
 		
 		switch (movimentacoes.tipo) {
@@ -81,55 +123,176 @@ public class MovimentacoesService {
 		
 	}
 
-	public Optional<Movimentacao> buscarMovimentacaoPeloId(Long movimentacaoId) {
+	public Optional<Movimentacoes> buscarMovimentacaoPeloId(Long movimentacaoId) throws MovimentacoesException {
 
-		Optional<Movimentacao> movimentacao = java.util.Optional.empty();
+		Optional<Movimentacoes> movimentacao = java.util.Optional.empty();
 		try {
 			movimentacao = movimentacoesRepo.findById(movimentacaoId);
+			if(movimentacao.isEmpty()) {
+				throw new EntityNotFoundException("Movimentacao não localizada!");
+			}
 			return movimentacao;
 		} catch (Exception e) {
 			log.error("Erro para localizar movimentacao: " + e.getMessage());
-			return movimentacao;
+			throw new MovimentacoesException("Erro para localizar movimentação: " + e.getMessage());
 		}
 	}
 
-	public String atualizar(Movimentacao movimentacao) {
+	public Movimentacoes atualizar(Movimentacoes movimentacao) throws MovimentacoesException {
 
-		String status = "";
 		try {
 			boolean existsById = movimentacoesRepo.existsById(movimentacao.getId());
 			if (existsById) {
 				movimentacoesRepo.save(movimentacao);
 				log.info("Movimentacao atualizado com sucesso!");
-				status = "OK";
+				return movimentacao;
 			} else {
 				log.info("movimentacao não localizada!");
-				status = "404";
+				throw new EntityNotFoundException("Movimentacao não localizada!");
 			}
 		} catch (Exception e) {
 			log.error("Erro para atualizar movimentacao: " + e.getMessage());
-			status = "NOK";
+			throw new MovimentacoesException("Erro para atualizar movimentação: " + e.getMessage());
 		}
 
-		return status;
 	}
 
-	public String removerPeloId(Long movimentacaoId) {
-		String status = "";
+	public void removerPeloId(Long movimentacaoId) throws MovimentacoesException {
 
 		try {
 			boolean exists = movimentacoesRepo.existsById(movimentacaoId);
 			if (exists) {
 				movimentacoesRepo.deleteById(movimentacaoId);
-				return status = "OK";
 			} else {
 				log.info("Movimentacao não localizada !");
-				return status = "404";
+				throw new EntityNotFoundException("Movimentacao não localizada!");
 			}
 		} catch (Exception e) {
 			log.error("Erro para remover Movimentacao: " + e.getMessage());
-			return status = e.getMessage();
+			throw new MovimentacoesException("Erro para atualizar movimentação: " + e.getMessage());
 		}
+	}
+
+	public MockMultipartFile relatorio(Long movimentacaoId, String data, Long clienteId) {
+		
+		List<Movimentacoes> movimentacao = new ArrayList<Movimentacoes>();
+		
+		LocalDateTime dataConvertida = null;
+		
+		if(!StringUtils.isEmpty(data)) {
+			dataConvertida = LocalDateTime.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+		
+		movimentacao = movimentacoesRepo.findByIdOrDataOrClienteId(movimentacaoId, dataConvertida, clienteId);
+//		
+		FileOutputStream arquivo = null;
+		File arquivoExcel = null;
+		byte[] bytes = null;
+		MockMultipartFile mockMultipartFile = null;
+		if(!movimentacao.isEmpty()) {
+			try {
+				Workbook planilha;
+				
+				planilha = new XSSFWorkbook();
+				
+				Sheet abaMovimentacao = planilha.createSheet("movimentacoes");
+				
+				int linhaNum = 1;
+				int celulaNum = 0;
+				
+				Row linhaCabeçalho = abaMovimentacao.createRow(0);
+				
+				Cell celulaA = linhaCabeçalho.createCell(0);
+				celulaA.setCellValue((String)"ID");
+				
+				Cell celulaB = linhaCabeçalho.createCell(1);
+				celulaB.setCellValue((String)"Data");
+				
+				Cell celulaC = linhaCabeçalho.createCell(2);
+				celulaC.setCellValue((String)"Nome do cliente");
+				
+				Cell celulaD = linhaCabeçalho.createCell(3);
+				celulaD.setCellValue((String)"Valor");
+				
+				Cell celulaE = linhaCabeçalho.createCell(4);
+				celulaE.setCellValue((String)"Moeda");
+				
+				Cell celulaF = linhaCabeçalho.createCell(5);
+				celulaF.setCellValue((String)"Tipo");
+				
+		        DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+				
+				for (Iterator iterator = movimentacao.iterator(); iterator.hasNext();) {
+					Movimentacoes movimentacao2 = (Movimentacoes) iterator.next();
+					
+					Row linha = abaMovimentacao.createRow(linhaNum++);
+					
+					linha.createCell(0).setCellValue((Long) movimentacao2.getId());
+					
+					LocalDateTime dateTimeExcel = LocalDateTime.parse(movimentacao2.getData().toString(), inputFormatter);
+					String dataConvertidaExcel = dateTimeExcel.format(outputFormatter);
+					
+					linha.createCell(1).setCellValue((String) dataConvertidaExcel);
+					
+					linha.createCell(2).setCellValue((String) movimentacao2.getCliente().getNome());
+					
+					linha.createCell(3).setCellValue((String) movimentacao2.getValor());
+					
+					linha.createCell(4).setCellValue((String) movimentacao2.getMoeda().toString());
+					
+					linha.createCell(5).setCellValue((String) movimentacao2.getTipo());
+				}
+				
+				abaMovimentacao.createFreezePane(0, 1);
+				
+				arquivoExcel = new File("movimentacoes_" + 
+				LocalDateTime.now().getYear() +
+				LocalDateTime.now().getMonthValue() +
+				LocalDateTime.now().getDayOfMonth() +
+				LocalDateTime.now().getHour() +
+				LocalDateTime.now().getMinute() 			
+				+".xlsx");
+				arquivo = new FileOutputStream(arquivoExcel);
+				planilha.write(arquivo);
+				
+				FileInputStream fis = new FileInputStream(arquivoExcel);
+		        bytes = new byte[(int) arquivoExcel.length()];
+		        
+		        mockMultipartFile = new MockMultipartFile(arquivoExcel.getName(), arquivoExcel.getName(), 
+		        		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", bytes);
+		        
+		        fis.read(bytes);
+		        fis.close();
+				
+				arquivo.close();
+				planilha.close();
+				
+			} catch (Exception e) {
+				log.error("Erro na geração do relatório de movimentacoes " + e.getMessage());
+			} finally {
+				try {
+					arquivo.close();
+				} catch (IOException e) {
+					log.error("Erro na geração do relatório de movimentacoes " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+		
+        return mockMultipartFile;
+	}
+	
+	public TaxaCambio pegarTaxaCambio() {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ResponseEntity<TaxaCambio> response = restTemplate.getForEntity(URI
+				.create(exchangeApi+"latest"+ "?"+"access_key="+exchangeApiAcessKey), TaxaCambio.class);
+		TaxaCambio body = response.getBody();
+		
+		return body;
+
 	}
 
 }

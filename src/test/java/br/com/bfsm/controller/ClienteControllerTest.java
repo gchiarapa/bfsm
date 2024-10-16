@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import br.com.bfsm.domain.cliente.CadastroCliente;
 import br.com.bfsm.domain.cliente.Cliente;
 import br.com.bfsm.domain.cliente.DetalhesCliente;
+import br.com.bfsm.infra.exception.ClienteException;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.service.ClienteService;
 
@@ -62,9 +63,14 @@ class ClienteControllerTest {
 	@WithMockUser
 	void testCadatrarSucesso200() throws Exception {
 		
-		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", "1000");
-		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", "1000");
-		when(clienteService.salvar(any(Cliente.class))).thenReturn(new Cliente(cadastro));
+		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", "1000", (byte) 1);
+		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", "1000", (byte) 1);
+		try {
+			when(clienteService.salvar(any(CadastroCliente.class))).thenReturn(new Cliente(cadastro));
+		} catch (ClienteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		var response = mvc
 				.perform(

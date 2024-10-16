@@ -8,7 +8,10 @@ public record UsuarioCadastro(
 		String login,
 		
 		@NotNull
-		String senha
+		String senha,
+		
+		@NotNull
+		int ativo
 		) {
 
 }
