@@ -9,7 +9,7 @@ public record AtualizaUsuario(
 		
 		String login,
 		
-//		String senha
+		String senha,
 		int ativo
 		) {
 

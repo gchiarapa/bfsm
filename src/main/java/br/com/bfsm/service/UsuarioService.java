@@ -103,6 +103,7 @@ public class UsuarioService {
 			String status = "";
 			boolean existsById = usuarioRepo.existsById(usuario.getId());
 			if (existsById) {
+				usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 				usuarioRepo.save(usuario);
 				log.info("usuario atualizado com sucesso!");
 				return status = "OK";				

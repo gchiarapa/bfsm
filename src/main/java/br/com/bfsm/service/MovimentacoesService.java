@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -29,18 +31,14 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.bfsm.domain.cambio.TaxaCambio;
 import br.com.bfsm.domain.cliente.Cliente;
+import br.com.bfsm.domain.movimentacao.Moeda;
+import br.com.bfsm.domain.movimentacao.MovimentacaoSpecification;
 import br.com.bfsm.domain.movimentacao.Movimentacoes;
 import br.com.bfsm.infra.exception.MovimentacoesException;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.repository.MovimentacoesRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 
 @Service
 public class MovimentacoesService {
@@ -173,18 +171,23 @@ public class MovimentacoesService {
 		}
 	}
 
-	public MockMultipartFile relatorio(Long movimentacaoId, String data, Long clienteId) {
+	public MockMultipartFile relatorio(Long movimentacaoId, String data, Long clienteId, String moeda) {
 		
 		List<Movimentacoes> movimentacao = new ArrayList<Movimentacoes>();
 		
 		LocalDateTime dataConvertida = null;
 		
-		if(!StringUtils.isEmpty(data)) {
+		if(!StringUtils.isEmpty(data) && clienteId != null) {
 			dataConvertida = LocalDateTime.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		}
 		
-		movimentacao = movimentacoesRepo.findByIdOrDataOrClienteId(movimentacaoId, dataConvertida, clienteId);
-//		
+		Specification<Movimentacoes> spec = Specification.where(MovimentacaoSpecification.byId(movimentacaoId))
+				.and(MovimentacaoSpecification.byData(dataConvertida))
+				.and(MovimentacaoSpecification.byCliente(clienteId))
+				.and(MovimentacaoSpecification.byMoeda(moeda));
+		
+		movimentacao = movimentacoesRepo.findAll(spec);
+		
 		FileOutputStream arquivo = null;
 		File arquivoExcel = null;
 		byte[] bytes = null;
@@ -222,15 +225,48 @@ public class MovimentacoesService {
 				
 		        DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 		        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		        DateTimeFormatter outputFormatterTaxaDeCambio = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				
 				for (Iterator iterator = movimentacao.iterator(); iterator.hasNext();) {
 					Movimentacoes movimentacao2 = (Movimentacoes) iterator.next();
-					
+
 					Row linha = abaMovimentacao.createRow(linhaNum++);
+					
+					LocalDateTime dateTimeExcel = LocalDateTime.parse(movimentacao2.getData().toString(), inputFormatter);
+					
+					String dataConvertidaTaxaDeCambio = dateTimeExcel.format(outputFormatterTaxaDeCambio);
+					//TODO testar o relatório
+					if(!movimentacao2.getMoeda().toString().equalsIgnoreCase(moeda)) {
+						TaxaCambio pegarTaxaCambioHistorico = pegarTaxaCambioHistorico(dataConvertidaTaxaDeCambio, moeda, 
+								movimentacao2.getMoeda().toString());
+						int cambioCabecalho = 5;
+						
+						for (Entry<String, Double> entry : pegarTaxaCambioHistorico.rates().entrySet()) {
+							
+							cambioCabecalho++;
+							Cell celulaG = linhaCabeçalho.createCell(cambioCabecalho);
+							celulaG.setCellValue((String)"Cambio");
+							linha.createCell(cambioCabecalho).setCellValue((String) entry.getKey());
+							
+							cambioCabecalho++;
+							Cell celulaH = linhaCabeçalho.createCell(cambioCabecalho);
+							celulaH.setCellValue((String)"Taxa");
+							linha.createCell(cambioCabecalho).setCellValue((String) entry.getValue().toString());
+							
+							cambioCabecalho++;
+							Cell celulaI = linhaCabeçalho.createCell(cambioCabecalho);
+							celulaI.setCellValue((String)"Valor convertido");
+							Double valorConvertido = (Double.parseDouble(movimentacao2.getValor()) * entry.getValue());
+							linha.createCell(cambioCabecalho).setCellValue((String) valorConvertido.toString());
+							
+							
+						}
+						
+					}
+					
 					
 					linha.createCell(0).setCellValue((Long) movimentacao2.getId());
 					
-					LocalDateTime dateTimeExcel = LocalDateTime.parse(movimentacao2.getData().toString(), inputFormatter);
 					String dataConvertidaExcel = dateTimeExcel.format(outputFormatter);
 					
 					linha.createCell(1).setCellValue((String) dataConvertidaExcel);
@@ -289,6 +325,26 @@ public class MovimentacoesService {
 		
 		ResponseEntity<TaxaCambio> response = restTemplate.getForEntity(URI
 				.create(exchangeApi+"latest"+ "?"+"access_key="+exchangeApiAcessKey), TaxaCambio.class);
+		TaxaCambio body = response.getBody();
+		
+		return body;
+
+	}
+	
+	public TaxaCambio pegarTaxaCambioHistorico(String data, String moeda, String moedaBase) {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		if(StringUtils.isEmpty(moeda)) {
+			moeda = "";
+			Moeda[] moedas = Moeda.values();
+			for(int m = 0; m < moedas.length; m++) {
+				moeda += moedas[m].name() + ",";					
+			}
+		}
+		
+		ResponseEntity<TaxaCambio> response = restTemplate.getForEntity(URI
+				.create(exchangeApi+data+ "?"+"access_key="+exchangeApiAcessKey+"&symbols="+ moeda.toUpperCase()), TaxaCambio.class);
 		TaxaCambio body = response.getBody();
 		
 		return body;

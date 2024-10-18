@@ -40,6 +40,8 @@ public class Usuario implements UserDetails {
 	public Usuario(AtualizaUsuario usuarioAtualizacao) {
 		this.id = usuarioAtualizacao.id();
 		this.login = usuarioAtualizacao.login();
+		this.senha = usuarioAtualizacao.senha();
+		this.ativo = usuarioAtualizacao.ativo();
 	}
 	
 	public Usuario(DetalhesUsuario usuarioDetalhes) {

@@ -147,16 +147,15 @@ public class MovimentacaoController {
 	@GetMapping("/relatório")
 	public ResponseEntity<InputStreamResource> relatório(@RequestParam(required = false) Long movimentacaoId, 
 			@RequestParam(required = false, defaultValue = "") String data, 
-			@RequestParam(required = false) Long clienteId) throws ParametrosAusentesException {
+			@RequestParam(required = false) Long clienteId, @RequestParam(required = false) String moeda) throws ParametrosAusentesException {
 		
 		log.info("Iniciando criação do relatório");
-		
 		
 		if(null == movimentacaoId && null == data &&  null == clienteId) {
 			throw new ParametrosAusentesException("Parametro(s) inválidos ou não enviados!");
 		}
 		
-		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, data, clienteId);
+		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, data, clienteId, moeda);
 		
 		if(relatorio != null) {
 			log.info("relatório gerado " + relatorio.getName());
