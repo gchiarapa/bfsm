@@ -21,9 +21,12 @@ public record AtualizarMovimentacao(
 		String valor,
 		
 
-		Cliente cliente,
+		@NotNull
+		Long clienteId,
 		
-		String moeda
+		Moeda moeda,
+		
+		Categoria categoria
 		
 		) {
 

@@ -7,15 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,13 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.bfsm.domain.cambio.TaxaCambio;
 import br.com.bfsm.domain.cliente.Cliente;
 import br.com.bfsm.domain.movimentacao.AtualizarMovimentacao;
 import br.com.bfsm.domain.movimentacao.DadosCadastroMovimentacao;
 import br.com.bfsm.domain.movimentacao.DetalhesMovimentacao;
 import br.com.bfsm.domain.movimentacao.Movimentacoes;
-import br.com.bfsm.infra.exception.ClienteException;
 import br.com.bfsm.infra.exception.MovimentacoesException;
 import br.com.bfsm.infra.exception.ParametrosAusentesException;
 import br.com.bfsm.repository.ClienteRepository;
@@ -54,7 +55,8 @@ public class MovimentacaoController {
 	
 	private static final Logger log = LoggerFactory.getLogger(MovimentacaoController.class);
 	
-	@PostMapping(value = "/adicionar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	
+	@PostMapping(value = "/adicionar")
 	public ResponseEntity cadastrar(@RequestBody DadosCadastroMovimentacao movimentacoesDados, 
 			UriComponentsBuilder uriBuilder) {
 		
@@ -144,18 +146,22 @@ public class MovimentacaoController {
 		
 	}
 	
-	@GetMapping("/relatório")
-	public ResponseEntity<InputStreamResource> relatório(@RequestParam(required = false) Long movimentacaoId, 
-			@RequestParam(required = false, defaultValue = "") String data, 
-			@RequestParam(required = false) Long clienteId, @RequestParam(required = false) String moeda) throws ParametrosAusentesException {
+	@GetMapping("/relatorio")
+	public ResponseEntity<InputStreamResource> relatorio(@RequestParam(required = false) Long movimentacaoId, 
+			@RequestParam(required = false, defaultValue = "") String dataInicio, 
+			@RequestParam(required = false, defaultValue = "") String dataFim,
+			@RequestParam(required = false) Long clienteId, 
+			@RequestParam(required = false) Long moedaId,
+			@RequestParam(required = false) Long categoriaId
+			) throws ParametrosAusentesException {
 		
 		log.info("Iniciando criação do relatório");
 		
-		if(null == movimentacaoId && null == data &&  null == clienteId) {
+		if(null == movimentacaoId && null == dataInicio && null == dataFim &&  null == clienteId && null == categoriaId) {
 			throw new ParametrosAusentesException("Parametro(s) inválidos ou não enviados!");
 		}
 		
-		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, data, clienteId, moeda);
+		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, dataInicio,dataFim, clienteId, moedaId, categoriaId);
 		
 		if(relatorio != null) {
 			log.info("relatório gerado " + relatorio.getName());
@@ -181,6 +187,37 @@ public class MovimentacaoController {
 			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Não foi localizado nenhuma movimentação com os dados fornecidos");
 			return ResponseEntity.of(forStatusAndDetail).build();
 		}
+	}
+	
+	@GetMapping("/relatorio/resumo")
+	public ResponseEntity relatorioResumo(@RequestParam(required = false) Long movimentacaoId, 
+			@RequestParam(required = false, defaultValue = "") String dataInicio, 
+			@RequestParam(required = false, defaultValue = "") String dataFim, 
+			@RequestParam(required = false) Long clienteId, 
+			@RequestParam(required = false) Long moedaId, @RequestParam(required = false) Long categoriaId,
+			Pageable p) throws ParametrosAusentesException {
+		
+		log.info("Iniciando criação do relatório");
+		
+		if(null == movimentacaoId && null == dataInicio && null == dataFim && null == clienteId && null == categoriaId) {
+			throw new ParametrosAusentesException("Parametro(s) inválido(s) ou não enviado(s)!");
+		}
+			
+		try {
+			Pageable page = PageRequest.of(p.getPageNumber(), p.getPageSize());
+			Page<DetalhesMovimentacao> relatorio = movimentacoesService.relatorioResumo(page, movimentacaoId, dataInicio,dataFim, clienteId, moedaId, categoriaId);
+			log.info("relatório gerado ");
+			return ResponseEntity.ok().body(relatorio);
+		} catch (EntityNotFoundException e) {
+			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Não foi localizado nenhuma movimentação com os dados fornecidos");
+			return ResponseEntity.of(forStatusAndDetail).build();
+		} catch (Exception e) {
+			log.error("Erro para gerar relatorio final: " + e.getMessage());
+			e.printStackTrace();
+			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Erro para gerar relatório: " + e.getMessage());
+			return ResponseEntity.of(forStatusAndDetail).build();
+		}
+			
 	}
 	
 

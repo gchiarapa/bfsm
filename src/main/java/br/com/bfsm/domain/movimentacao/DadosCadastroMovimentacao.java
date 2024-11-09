@@ -22,7 +22,9 @@ public record DadosCadastroMovimentacao(
 		@NotNull
 		Long clienteId,
 		
-		String moeda
+		Moeda moeda,
+		
+		Categoria categoria
 		) {
 	
 	

@@ -50,7 +50,6 @@ public class WebSecurityConfig {
 								.requestMatchers(HttpMethod.DELETE,"/cliente").hasRole("Admin")
 								.requestMatchers(HttpMethod.DELETE,"/movimentacoes").hasRole("Admin")
 								.requestMatchers(HttpMethod.DELETE,"/usuario").hasRole("Admin")
-								.requestMatchers(HttpMethod.POST,"/login").permitAll()
 								.anyRequest().authenticated()
 								.and()
 								.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class));

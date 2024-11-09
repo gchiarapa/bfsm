@@ -1,6 +1,20 @@
 package br.com.bfsm.domain.movimentacao;
 
-public enum Moeda {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "moeda", schema = "bank")
+public class Moeda {
 	
 //    DOLAR(1.0, "USD"),
 //    EURO(0.85, "EUR"),
@@ -8,11 +22,12 @@ public enum Moeda {
 //    LIBRA(0.75, "GBP"),
 //    IENE(110.0, "JPY");
 	
-		USD,
-	    EUR,
-	    BRL,
-	    GBP,
-	    JPY,
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public
+	Long id;
+	
+	public String nome;
 	
 //	Moeda(double txCambio, String moeda) {
 //		this.moeda = moeda;

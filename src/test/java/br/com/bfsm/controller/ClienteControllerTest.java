@@ -2,10 +2,12 @@ package br.com.bfsm.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import br.com.bfsm.domain.cliente.DetalhesCliente;
 import br.com.bfsm.infra.exception.ClienteException;
 import br.com.bfsm.repository.ClienteRepository;
 import br.com.bfsm.service.ClienteService;
+import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,11 +43,19 @@ class ClienteControllerTest {
 	@Autowired
 	private JacksonTester<DetalhesCliente> detalhesCliente;
 	
-	@Autowired
+	@MockBean
 	ClienteService clienteService;
 	
 	@MockBean
 	ClienteRepository clienteRepo;
+	
+	private DetalhesCliente dadosDetalhamentosCliente;
+	
+	private CadastroCliente cadastro;
+	
+	private Cliente cliente;
+	
+	private Long clienteId;
 	
 	@Test
 	@DisplayName("Testar cadastro com requisição ausente HTTP 400")
@@ -63,12 +74,12 @@ class ClienteControllerTest {
 	@WithMockUser
 	void testCadatrarSucesso200() throws Exception {
 		
-		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", "1000", (byte) 1);
-		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", "1000", (byte) 1);
+		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", "1000", 1);
+		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", "1000", 1);
+				
 		try {
 			when(clienteService.salvar(any(CadastroCliente.class))).thenReturn(new Cliente(cadastro));
 		} catch (ClienteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -88,19 +99,92 @@ class ClienteControllerTest {
 		
 	}
 
-//	@Test
-//	void testBuscar() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	void testRemover() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	void testAtualizar() {
-//		fail("Not yet implemented"); // TODO
-//	}
+	@Test
+	@DisplayName("Testar busca de cliente que não existe HTTP 404")
+	@WithMockUser
+	void testBuscarErro404() throws Exception {
+		
+		clienteId = 11111L;
+		
+		try {
+			when(clienteService.buscarClientePeloId(clienteId, 1)).thenThrow(new EntityNotFoundException());
+		} catch (ClienteException e) {
+			e.printStackTrace();
+		}
+		
+		var response = mvc
+				.perform(
+						get("/cliente/buscar?clienteId="+clienteId))
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+		
+	}
+	
+	@Test
+	@DisplayName("Testar busca de cliente que existe HTTP 200")
+	@WithMockUser
+	void testBuscarSucesso200() throws Exception {
+		
+		clienteId = 1L;
+		Cliente cliente = new Cliente(clienteId, "Gustavo", "Rua Abc", "1000", null, 0);
+		
+		try {
+			when(clienteService.buscarClientePeloId(clienteId, 1)).thenReturn(cliente);
+		} catch (ClienteException e) {
+			e.printStackTrace();
+		}
+		
+		var response = mvc
+				.perform(
+						get("/cliente/buscar?clienteId="+clienteId))
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		
+	}
+
+	@Test
+	@DisplayName("Testar remoção de cliente que existe HTTP 200")
+	@WithMockUser
+	void testRemoverSucesso200() throws Exception {
+		clienteId = 1L;
+		String status = "OK";
+		
+		try {
+			when(clienteService.removerPeloId(clienteId)).thenReturn(status);
+		} catch (ClienteException e) {
+			e.printStackTrace();
+		}
+		
+		var response = mvc
+				.perform(
+						delete("/cliente/remover?clienteId="+clienteId))
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+	}
+	
+	@Test
+	@DisplayName("Testar remoção de cliente que não existe HTTP 404")
+	@WithMockUser
+	void testRemoverErro404() throws Exception {
+		
+		clienteId = 11111L;
+		
+		try {
+			when(clienteService.removerPeloId(clienteId)).thenThrow(new EntityNotFoundException());
+		} catch (ClienteException e) {
+			e.printStackTrace();
+		}
+		
+		var response = mvc
+				.perform(
+						delete("/cliente/remover?clienteId="+clienteId))
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+	}
+
 
 }

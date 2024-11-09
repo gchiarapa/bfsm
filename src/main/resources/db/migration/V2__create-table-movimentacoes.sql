@@ -3,8 +3,9 @@ CREATE TABLE IF NOT EXISTS movimentacoes (
   tipo varchar(50) DEFAULT NULL,
   data datetime DEFAULT NULL,
   valor varchar(200) DEFAULT NULL,
-  id_cliente int NOT NULL,
+  cliente_id int NOT NULL,
+  moeda varchar(50) NOT NULL,
   PRIMARY KEY (id),
-  KEY idCliente_idx (id_cliente),
-  CONSTRAINT idCliente FOREIGN KEY (id_cliente) REFERENCES cliente (id)
+  KEY idCliente_idx (cliente_id),
+  CONSTRAINT idCliente FOREIGN KEY (cliente_id) REFERENCES cliente (id)
 );

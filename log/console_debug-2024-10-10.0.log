@@ -1,2 +1,0 @@
-2024-10-10 08:45:51.152 INFO  [bfsm,org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin, shutdown, SpringApplicationAdminMXBeanRegistrar.java:159] o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
-2024-10-10 08:45:51.344 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, destroy, AbstractEntityManagerFactoryBean.java:650] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'

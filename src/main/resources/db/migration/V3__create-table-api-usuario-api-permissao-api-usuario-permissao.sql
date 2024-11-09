@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS api_usuario (
   id int NOT NULL AUTO_INCREMENT,
   login varchar(50) NOT NULL,
   senha varchar(2000) NOT NULL,
+  ativo int NOT NULL,
   PRIMARY KEY (id)
 );
 
