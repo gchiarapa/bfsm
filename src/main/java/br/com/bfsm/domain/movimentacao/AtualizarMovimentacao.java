@@ -1,10 +1,10 @@
 package br.com.bfsm.domain.movimentacao;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.bfsm.domain.cliente.Cliente;
 import jakarta.validation.constraints.NotNull;
 
 public record AtualizarMovimentacao(
@@ -18,15 +18,17 @@ public record AtualizarMovimentacao(
 		@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
 		LocalDateTime data,
 		
-		String valor,
+		BigDecimal valor,
 		
 
 		@NotNull
-		Long clienteId,
+		Long clienteAId,
 		
-		Moeda moeda,
+		Long clienteBId,
 		
-		Categoria categoria
+		Long moedaId,
+		
+		Long categoriaId
 		
 		) {
 

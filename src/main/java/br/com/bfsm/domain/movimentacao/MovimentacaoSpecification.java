@@ -34,5 +34,10 @@ public class MovimentacaoSpecification {
 	    public static Specification<Movimentacoes> byCategoria(Long categoriaId) {
 	    	return (root, query, criteriaBuilder) -> categoriaId == null ? null : criteriaBuilder.equal(root.get("categoria").get("id"), categoriaId);
 	    }
+	    
+	    public static Specification<Movimentacoes> byAtivo(boolean ativo) {
+	    	return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("ativo"), ativo);
+	    }
+	    
 
 }

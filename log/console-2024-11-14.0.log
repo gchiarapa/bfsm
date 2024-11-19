@@ -1,0 +1,289 @@
+2024-11-14 14:33:54.627 INFO  [bfsm,org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin, shutdown, SpringApplicationAdminMXBeanRegistrar.java:159] o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2024-11-14 14:33:56.371 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, destroy, AbstractEntityManagerFactoryBean.java:650] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-14 19:03:01.398 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarting, StartupInfoLogger.java:50] br.com.bfsm.BfsmApplication - Starting BfsmApplication using Java 17.0.11 with PID 32112 (C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm\target\classes started by goliveic in C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm)
+2024-11-14 19:03:01.405 INFO  [bfsm,org.springframework.boot.SpringApplication, logStartupProfileInfo, SpringApplication.java:654] br.com.bfsm.BfsmApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-14 19:03:01.500 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-11-14 19:03:01.501 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-11-14 19:03:03.073 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:143] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-14 19:03:03.167 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:211] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 79 ms. Found 4 JPA repository interfaces.
+2024-11-14 19:03:03.848 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, initialize, TomcatWebServer.java:111] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-11-14 19:03:03.937 INFO  [bfsm,org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext, prepareWebApplicationContext, ServletWebServerApplicationContext.java:296] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2434 ms
+2024-11-14 19:03:04.794 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bank (MySQL 8.0)
+2024-11-14 19:03:04.993 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbValidate - Successfully validated 9 migrations (execution time 00:00.109s)
+2024-11-14 19:03:05.029 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Current version of schema `bank`: 9
+2024-11-14 19:03:05.038 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Schema `bank` is up to date. No migration necessary.
+2024-11-14 19:03:05.236 INFO  [bfsm,org.hibernate.jpa.internal.util.LogHelper, logPersistenceUnitInformation, LogHelper.java:31] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-14 19:03:05.394 INFO  [bfsm,org.hibernate.Version, logVersion, Version.java:44] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-11-14 19:03:05.479 INFO  [bfsm,org.hibernate.cache.internal.RegionFactoryInitiator, initiateService, RegionFactoryInitiator.java:50] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-11-14 19:03:05.928 INFO  [bfsm,org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo, addTransformer, SpringPersistenceUnitInfo.java:87] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-14 19:03:07.183 ERROR [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, buildNativeEntityManagerFactory, AbstractEntityManagerFactoryBean.java:426] o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: Could not instantiate persister org.hibernate.persister.entity.SingleTableEntityPersister
+2024-11-14 19:03:07.185 ERROR [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatStarter, onStartup, TomcatStarter.java:60] o.s.b.w.e.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'securityFilter': Unsatisfied dependency expressed through field 'usuarioRepo': Error creating bean with name 'usuarioRepository' defined in br.com.bfsm.repository.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2024-11-14 19:03:07.226 WARN  [bfsm,org.springframework.context.support.AbstractApplicationContext, refresh, AbstractApplicationContext.java:633] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2024-11-14 19:03:07.245 INFO  [bfsm,org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger, logMessage, ConditionEvaluationReportLogger.java:82] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-11-14 19:03:07.271 ERROR [bfsm,org.springframework.boot.SpringApplication, reportFailure, SpringApplication.java:859] o.s.boot.SpringApplication - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:165)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:619)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at br.com.bfsm.BfsmApplication.main(BfsmApplication.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:516)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:222)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityFilter': Unsatisfied dependency expressed through field 'usuarioRepo': Error creating bean with name 'usuarioRepository' defined in br.com.bfsm.repository.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:788)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:768)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1439)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:211)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:174)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:169)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:154)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4414)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:415)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:874)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'usuarioRepository' defined in br.com.bfsm.repository.UsuarioRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1705)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1454)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:785)
+	... 60 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1185)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 73 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: Could not instantiate persister org.hibernate.persister.entity.SingleTableEntityPersister
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1806)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 85 common frames omitted
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.MappingException: Could not instantiate persister org.hibernate.persister.entity.SingleTableEntityPersister
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:421)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)
+	... 92 common frames omitted
+Caused by: org.hibernate.MappingException: Could not instantiate persister org.hibernate.persister.entity.SingleTableEntityPersister
+	at org.hibernate.persister.internal.PersisterFactoryImpl.createEntityPersister(PersisterFactoryImpl.java:105)
+	at org.hibernate.persister.internal.PersisterFactoryImpl.createEntityPersister(PersisterFactoryImpl.java:77)
+	at org.hibernate.metamodel.model.domain.internal.MappingMetamodelImpl.processBootEntities(MappingMetamodelImpl.java:249)
+	at org.hibernate.metamodel.model.domain.internal.MappingMetamodelImpl.finishInitialization(MappingMetamodelImpl.java:183)
+	at org.hibernate.internal.SessionFactoryImpl.initializeMappingModel(SessionFactoryImpl.java:371)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:300)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	... 96 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Could not create type
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:170)
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:190)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState.load(ByteBuddyState.java:200)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState.loadProxy(ByteBuddyState.java:115)
+	at org.hibernate.proxy.pojo.bytebuddy.ByteBuddyProxyHelper.buildProxy(ByteBuddyProxyHelper.java:62)
+	at org.hibernate.proxy.pojo.bytebuddy.ByteBuddyProxyFactory.postInstantiate(ByteBuddyProxyFactory.java:65)
+	at org.hibernate.metamodel.internal.EntityRepresentationStrategyPojoStandard.createProxyFactory(EntityRepresentationStrategyPojoStandard.java:305)
+	at org.hibernate.metamodel.internal.EntityRepresentationStrategyPojoStandard.resolveProxyFactory(EntityRepresentationStrategyPojoStandard.java:179)
+	at org.hibernate.metamodel.internal.EntityRepresentationStrategyPojoStandard.<init>(EntityRepresentationStrategyPojoStandard.java:145)
+	at org.hibernate.metamodel.internal.ManagedTypeRepresentationResolverStandard.resolveStrategy(ManagedTypeRepresentationResolverStandard.java:62)
+	at org.hibernate.persister.entity.AbstractEntityPersister.<init>(AbstractEntityPersister.java:539)
+	at org.hibernate.persister.entity.SingleTableEntityPersister.<init>(SingleTableEntityPersister.java:134)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at org.hibernate.persister.internal.PersisterFactoryImpl.createEntityPersister(PersisterFactoryImpl.java:94)
+	... 106 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: br/com/bfsm/domain/cliente/CadastroCliente
+	at java.base/java.lang.Class.getDeclaredConstructors0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredConstructors(Class.java:3373)
+	at java.base/java.lang.Class.getDeclaredConstructors(Class.java:2555)
+	at net.bytebuddy.description.method.MethodList$ForLoadedMethods.<init>(MethodList.java:151)
+	at net.bytebuddy.description.type.TypeDescription$ForLoadedType.getDeclaredMethods(TypeDescription.java:8944)
+	at net.bytebuddy.description.type.TypeDescription$Generic$OfNonGenericType.getDeclaredMethods(TypeDescription.java:3716)
+	at net.bytebuddy.description.type.TypeDescription$Generic$LazyProjection.getDeclaredMethods(TypeDescription.java:6214)
+	at net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy$Default$5.doExtractConstructors(ConstructorStrategy.java:175)
+	at net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy$Default.extractConstructors(ConstructorStrategy.java:196)
+	at net.bytebuddy.dynamic.scaffold.subclass.SubclassDynamicTypeBuilder.applyConstructorStrategy(SubclassDynamicTypeBuilder.java:242)
+	at net.bytebuddy.dynamic.scaffold.subclass.SubclassDynamicTypeBuilder.toTypeWriter(SubclassDynamicTypeBuilder.java:212)
+	at net.bytebuddy.dynamic.scaffold.subclass.SubclassDynamicTypeBuilder.toTypeWriter(SubclassDynamicTypeBuilder.java:203)
+	at net.bytebuddy.dynamic.DynamicType$Builder$AbstractBase$UsingTypeWriter.make(DynamicType.java:4055)
+	at net.bytebuddy.dynamic.DynamicType$Builder$AbstractBase.make(DynamicType.java:3739)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState.make(ByteBuddyState.java:243)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState.make(ByteBuddyState.java:232)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState$1.run(ByteBuddyState.java:207)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState$1.run(ByteBuddyState.java:204)
+	at org.hibernate.bytecode.internal.bytebuddy.ByteBuddyState.lambda$load$0(ByteBuddyState.java:217)
+	at net.bytebuddy.TypeCache.findOrInsert(TypeCache.java:168)
+	... 123 common frames omitted
+Caused by: java.lang.ClassNotFoundException: br.com.bfsm.domain.cliente.CadastroCliente
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:467)
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:121)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520)
+	... 143 common frames omitted
+2024-11-14 19:03:47.731 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarting, StartupInfoLogger.java:50] br.com.bfsm.BfsmApplication - Starting BfsmApplication using Java 17.0.11 with PID 62116 (C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm\target\classes started by goliveic in C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm)
+2024-11-14 19:03:47.734 INFO  [bfsm,org.springframework.boot.SpringApplication, logStartupProfileInfo, SpringApplication.java:654] br.com.bfsm.BfsmApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-14 19:03:47.791 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-11-14 19:03:47.792 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-11-14 19:03:48.617 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:143] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-14 19:03:48.701 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:211] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 70 ms. Found 4 JPA repository interfaces.
+2024-11-14 19:03:49.279 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, initialize, TomcatWebServer.java:111] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-11-14 19:03:49.356 INFO  [bfsm,org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext, prepareWebApplicationContext, ServletWebServerApplicationContext.java:296] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1564 ms
+2024-11-14 19:03:50.064 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bank (MySQL 8.0)
+2024-11-14 19:03:50.144 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbValidate - Successfully validated 9 migrations (execution time 00:00.047s)
+2024-11-14 19:03:50.166 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Current version of schema `bank`: 9
+2024-11-14 19:03:50.172 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Schema `bank` is up to date. No migration necessary.
+2024-11-14 19:03:50.297 INFO  [bfsm,org.hibernate.jpa.internal.util.LogHelper, logPersistenceUnitInformation, LogHelper.java:31] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-14 19:03:50.400 INFO  [bfsm,org.hibernate.Version, logVersion, Version.java:44] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-11-14 19:03:50.454 INFO  [bfsm,org.hibernate.cache.internal.RegionFactoryInitiator, initiateService, RegionFactoryInitiator.java:50] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-11-14 19:03:50.788 INFO  [bfsm,org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo, addTransformer, SpringPersistenceUnitInfo.java:87] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-14 19:03:51.993 INFO  [bfsm,org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator, initiateService, JtaPlatformInitiator.java:59] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-14 19:03:51.996 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, buildNativeEntityManagerFactory, AbstractEntityManagerFactoryBean.java:437] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-14 19:03:52.362 INFO  [bfsm,org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer, configure, InitializeUserDetailsBeanManagerConfigurer.java:113] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name autenticacaoService
+2024-11-14 19:03:52.474 INFO  [bfsm,org.springframework.data.jpa.repository.query.QueryEnhancerFactory, <clinit>, QueryEnhancerFactory.java:49] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-11-14 19:03:53.090 WARN  [bfsm,org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration, openEntityManagerInViewInterceptor, JpaBaseConfiguration.java:236] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-14 19:03:53.950 INFO  [bfsm,org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer, startServer, OptionalLiveReloadServer.java:59] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-11-14 19:03:54.032 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, start, TomcatWebServer.java:243] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-11-14 19:03:54.047 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarted, StartupInfoLogger.java:56] br.com.bfsm.BfsmApplication - Started BfsmApplication in 6.74 seconds (process running for 7.795)
+2024-11-14 19:04:03.902 INFO  [bfsm,org.springframework.web.servlet.FrameworkServlet, initServletBean, FrameworkServlet.java:532] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-11-14 19:04:03.905 INFO  [bfsm,org.springframework.web.servlet.FrameworkServlet, initServletBean, FrameworkServlet.java:554] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-11-14 19:04:05.393 INFO  [bfsm,org.springdoc.api.AbstractOpenApiResource, getOpenApi, AbstractOpenApiResource.java:371] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 555 ms
+2024-11-14 19:06:12.146 INFO  [bfsm,org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener, onApplicationEvent, LocalDevToolsAutoConfiguration.java:211] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-11-14 19:06:12.942 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, destroy, AbstractEntityManagerFactoryBean.java:650] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-14 19:06:13.246 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarting, StartupInfoLogger.java:50] br.com.bfsm.BfsmApplication - Starting BfsmApplication using Java 17.0.11 with PID 62116 (C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm\target\classes started by goliveic in C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm)
+2024-11-14 19:06:13.247 INFO  [bfsm,org.springframework.boot.SpringApplication, logStartupProfileInfo, SpringApplication.java:654] br.com.bfsm.BfsmApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-14 19:06:13.721 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:143] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-14 19:06:13.759 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:211] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 37 ms. Found 4 JPA repository interfaces.
+2024-11-14 19:06:14.043 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, initialize, TomcatWebServer.java:111] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-11-14 19:06:14.062 INFO  [bfsm,org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext, prepareWebApplicationContext, ServletWebServerApplicationContext.java:296] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 811 ms
+2024-11-14 19:06:14.112 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bank (MySQL 8.0)
+2024-11-14 19:06:14.132 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbValidate - Successfully validated 9 migrations (execution time 00:00.011s)
+2024-11-14 19:06:14.141 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Current version of schema `bank`: 9
+2024-11-14 19:06:14.142 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Schema `bank` is up to date. No migration necessary.
+2024-11-14 19:06:14.159 INFO  [bfsm,org.hibernate.jpa.internal.util.LogHelper, logPersistenceUnitInformation, LogHelper.java:31] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-14 19:06:14.161 INFO  [bfsm,org.hibernate.cache.internal.RegionFactoryInitiator, initiateService, RegionFactoryInitiator.java:50] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-11-14 19:06:14.174 INFO  [bfsm,org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo, addTransformer, SpringPersistenceUnitInfo.java:87] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-14 19:06:14.276 INFO  [bfsm,org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator, initiateService, JtaPlatformInitiator.java:59] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-14 19:06:14.277 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, buildNativeEntityManagerFactory, AbstractEntityManagerFactoryBean.java:437] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-14 19:06:14.321 INFO  [bfsm,org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer, configure, InitializeUserDetailsBeanManagerConfigurer.java:113] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name autenticacaoService
+2024-11-14 19:06:14.393 WARN  [bfsm,org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration, openEntityManagerInViewInterceptor, JpaBaseConfiguration.java:236] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-14 19:06:14.534 INFO  [bfsm,org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer, startServer, OptionalLiveReloadServer.java:59] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-11-14 19:06:14.545 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, start, TomcatWebServer.java:243] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-11-14 19:06:14.550 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarted, StartupInfoLogger.java:56] br.com.bfsm.BfsmApplication - Started BfsmApplication in 1.393 seconds (process running for 148.298)
+2024-11-14 19:06:14.556 INFO  [bfsm,org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener, onApplicationEvent, ConditionEvaluationDeltaLoggingListener.java:63] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2024-11-14 19:06:17.882 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarting, StartupInfoLogger.java:50] br.com.bfsm.BfsmApplication - Starting BfsmApplication using Java 17.0.11 with PID 47720 (C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm\target\classes started by goliveic in C:\Users\goliveic\OneDrive - NTT DATA EMEAL\Java Intermediate\bfsm\bfsm)
+2024-11-14 19:06:17.887 INFO  [bfsm,org.springframework.boot.SpringApplication, logStartupProfileInfo, SpringApplication.java:654] br.com.bfsm.BfsmApplication - No active profile set, falling back to 1 default profile: "default"
+2024-11-14 19:06:17.940 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-11-14 19:06:17.940 INFO  [bfsm,org.springframework.boot.logging.DeferredLog, logTo, DeferredLog.java:252] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-11-14 19:06:18.749 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:143] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-14 19:06:18.811 INFO  [bfsm,org.springframework.data.repository.config.RepositoryConfigurationDelegate, registerRepositoriesIn, RepositoryConfigurationDelegate.java:211] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 54 ms. Found 4 JPA repository interfaces.
+2024-11-14 19:06:19.459 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, initialize, TomcatWebServer.java:111] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-11-14 19:06:19.549 INFO  [bfsm,org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext, prepareWebApplicationContext, ServletWebServerApplicationContext.java:296] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1608 ms
+2024-11-14 19:06:20.135 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bank (MySQL 8.0)
+2024-11-14 19:06:20.195 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbValidate - Successfully validated 9 migrations (execution time 00:00.030s)
+2024-11-14 19:06:20.219 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Current version of schema `bank`: 9
+2024-11-14 19:06:20.224 INFO  [bfsm,org.flywaydb.core.internal.logging.slf4j.Slf4jLog, info, Slf4jLog.java:37] o.f.core.internal.command.DbMigrate - Schema `bank` is up to date. No migration necessary.
+2024-11-14 19:06:20.322 INFO  [bfsm,org.hibernate.jpa.internal.util.LogHelper, logPersistenceUnitInformation, LogHelper.java:31] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-14 19:06:20.420 INFO  [bfsm,org.hibernate.Version, logVersion, Version.java:44] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-11-14 19:06:20.489 INFO  [bfsm,org.hibernate.cache.internal.RegionFactoryInitiator, initiateService, RegionFactoryInitiator.java:50] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-11-14 19:06:20.830 INFO  [bfsm,org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo, addTransformer, SpringPersistenceUnitInfo.java:87] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-14 19:06:21.931 INFO  [bfsm,org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator, initiateService, JtaPlatformInitiator.java:59] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-14 19:06:21.936 INFO  [bfsm,org.springframework.orm.jpa.AbstractEntityManagerFactoryBean, buildNativeEntityManagerFactory, AbstractEntityManagerFactoryBean.java:437] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-14 19:06:22.322 INFO  [bfsm,org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer, configure, InitializeUserDetailsBeanManagerConfigurer.java:113] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name autenticacaoService
+2024-11-14 19:06:22.355 INFO  [bfsm,org.springframework.data.jpa.repository.query.QueryEnhancerFactory, <clinit>, QueryEnhancerFactory.java:49] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-11-14 19:06:22.752 WARN  [bfsm,org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration, openEntityManagerInViewInterceptor, JpaBaseConfiguration.java:236] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-14 19:06:23.338 INFO  [bfsm,org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer, startServer, OptionalLiveReloadServer.java:59] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-11-14 19:06:23.382 INFO  [bfsm,org.springframework.boot.web.embedded.tomcat.TomcatWebServer, start, TomcatWebServer.java:243] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2024-11-14 19:06:23.391 INFO  [bfsm,org.springframework.boot.StartupInfoLogger, logStarted, StartupInfoLogger.java:56] br.com.bfsm.BfsmApplication - Started BfsmApplication in 5.918 seconds (process running for 6.991)
+2024-11-14 19:06:32.550 INFO  [bfsm,org.springframework.web.servlet.FrameworkServlet, initServletBean, FrameworkServlet.java:532] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-11-14 19:06:32.553 INFO  [bfsm,org.springframework.web.servlet.FrameworkServlet, initServletBean, FrameworkServlet.java:554] o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2024-11-14 19:06:33.626 INFO  [bfsm,org.springdoc.api.AbstractOpenApiResource, getOpenApi, AbstractOpenApiResource.java:371] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 584 ms
+2024-11-14 19:06:50.742 INFO  [bfsm,br.com.bfsm.infra.security.TokenService, gerarToken, TokenService.java:38] b.c.bfsm.infra.security.TokenService - Token gerado com sucesso 
+2024-11-14 19:07:01.148 INFO  [bfsm,br.com.bfsm.controller.MovimentacaoController, buscar, MovimentacaoController.java:102] b.c.b.c.MovimentacaoController - Iniciando busca do id: [id] 1
+2024-11-14 19:07:01.215 ERROR [bfsm,br.com.bfsm.service.MovimentacoesService, buscarMovimentacaoPeloId, MovimentacoesService.java:161] b.c.b.service.MovimentacoesService - Erro para localizar movimentacao: Movimentacao não localizada!
+2024-11-14 19:07:07.919 INFO  [bfsm,br.com.bfsm.controller.MovimentacaoController, buscar, MovimentacaoController.java:102] b.c.b.c.MovimentacaoController - Iniciando busca do id: [id] 2
+2024-11-14 19:07:07.935 INFO  [bfsm,br.com.bfsm.controller.MovimentacaoController, buscar, MovimentacaoController.java:107] b.c.b.c.MovimentacaoController - O id: [id] 2 foi localizado
+2024-11-14 19:29:12.241 INFO  [bfsm,br.com.bfsm.controller.MovimentacaoController, relatorioResumo, MovimentacaoController.java:214] b.c.b.c.MovimentacaoController - Iniciando criação do relatório
+2024-11-14 19:29:13.423 INFO  [bfsm,br.com.bfsm.controller.MovimentacaoController, relatorioResumo, MovimentacaoController.java:223] b.c.b.c.MovimentacaoController - relatório gerado 

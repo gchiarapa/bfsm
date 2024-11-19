@@ -83,7 +83,7 @@ public class UsuarioService {
 		try {
 			boolean exists = usuarioRepo.existsById(usuarioId);
 			if (exists) {
-				usuarioRepo.deleteById(usuarioId);
+				usuarioRepo.updateUsuarioAtivoById(false, usuarioId);
 				log.info("remocao do id: [id] " + usuarioId + " efetuada com sucesso");
 				return status = "OK";
 			} else {
@@ -187,7 +187,7 @@ public class UsuarioService {
 				try {
 					for (int i = 0; i < listUsuarios.size(); i++) {
 						UsuarioCadastro cadastroUsuario = new UsuarioCadastro(listUsuarios.get(i).getLogin(), 
-								listUsuarios.get(i).getSenha(), 1);
+								listUsuarios.get(i).getSenha(), true);
 						ResponseEntity<DetalhesUsuario> cadastrarUsuario;
 						try {
 							cadastrarUsuario = this.cadastrarUsuario(cadastroUsuario);
@@ -236,16 +236,7 @@ public class UsuarioService {
 	public Boolean validaUsuarioAtivo(@NotNull String login) {
 		Optional<Usuario> byLogin = usuarioRepo.findByLogin(login);
 		
-		Boolean ativo = false;
-		
-		if(byLogin.isPresent()) {
-			if(byLogin.get().getAtivo() == 1) {
-				ativo = true;
-			} else {
-				ativo = false;
-			}
-		}
-		return ativo;
+		return byLogin.get().isAtivo();
 		
 	}
 

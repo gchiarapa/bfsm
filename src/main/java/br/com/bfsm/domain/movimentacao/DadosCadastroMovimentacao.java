@@ -1,5 +1,6 @@
 package br.com.bfsm.domain.movimentacao;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,14 +18,18 @@ public record DadosCadastroMovimentacao(
 		LocalDateTime data,
 		
 		@NotNull
-		String valor,
+		BigDecimal valor,
 		
 		@NotNull
-		Long clienteId,
+		Long clienteAId,
 		
-		Moeda moeda,
+		Long clienteBId,
 		
-		Categoria categoria
+		Long moedaId,
+		
+		Long categoriaId,
+		
+		boolean ativo
 		) {
 	
 	

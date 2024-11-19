@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -74,8 +76,8 @@ class ClienteControllerTest {
 	@WithMockUser
 	void testCadatrarSucesso200() throws Exception {
 		
-		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", "1000", 1);
-		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", "1000", 1);
+		var dadosDetalhamentosCliente = new DetalhesCliente(null, "Gustavo", "Rua 2, numero 1", new BigDecimal("1000"), true);
+		var cadastro = new CadastroCliente("Gustavo", "Rua 2, numero 1", new BigDecimal("1000"), 1);
 				
 		try {
 			when(clienteService.salvar(any(CadastroCliente.class))).thenReturn(new Cliente(cadastro));
@@ -107,7 +109,7 @@ class ClienteControllerTest {
 		clienteId = 11111L;
 		
 		try {
-			when(clienteService.buscarClientePeloId(clienteId, 1)).thenThrow(new EntityNotFoundException());
+			when(clienteService.buscarClientePeloId(clienteId, true)).thenThrow(new EntityNotFoundException());
 		} catch (ClienteException e) {
 			e.printStackTrace();
 		}
@@ -127,10 +129,10 @@ class ClienteControllerTest {
 	void testBuscarSucesso200() throws Exception {
 		
 		clienteId = 1L;
-		Cliente cliente = new Cliente(clienteId, "Gustavo", "Rua Abc", "1000", null, 0);
+		Cliente cliente = new Cliente(clienteId, "Gustavo", "Rua Abc", new BigDecimal("1000"), null, true, null);
 		
 		try {
-			when(clienteService.buscarClientePeloId(clienteId, 1)).thenReturn(cliente);
+			when(clienteService.buscarClientePeloId(clienteId, true)).thenReturn(cliente);
 		} catch (ClienteException e) {
 			e.printStackTrace();
 		}

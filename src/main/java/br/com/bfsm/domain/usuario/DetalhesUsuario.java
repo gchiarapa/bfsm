@@ -6,11 +6,11 @@ public record DetalhesUsuario(
 		String login,
 		
 		Long id,
-		int ativo
+		boolean ativo
 		) {
 
 	public DetalhesUsuario(Usuario novoUsuario) {
-		this(novoUsuario.getLogin(), novoUsuario.id, novoUsuario.getAtivo());
+		this(novoUsuario.getLogin(), novoUsuario.id, novoUsuario.ativo);
 	}
 
 	public DetalhesUsuario(ResponseEntity<DetalhesUsuario> cadastrarUsuario) {

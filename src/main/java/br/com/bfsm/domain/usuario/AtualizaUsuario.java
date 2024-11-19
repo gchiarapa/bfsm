@@ -10,7 +10,7 @@ public record AtualizaUsuario(
 		String login,
 		
 		String senha,
-		int ativo
+		boolean ativo
 		) {
 
 }

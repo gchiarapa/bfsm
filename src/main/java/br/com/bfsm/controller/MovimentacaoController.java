@@ -1,7 +1,9 @@
 package br.com.bfsm.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +12,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -31,8 +34,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.bfsm.domain.cliente.Cliente;
 import br.com.bfsm.domain.movimentacao.AtualizarMovimentacao;
+import br.com.bfsm.domain.movimentacao.Categoria;
 import br.com.bfsm.domain.movimentacao.DadosCadastroMovimentacao;
 import br.com.bfsm.domain.movimentacao.DetalhesMovimentacao;
+import br.com.bfsm.domain.movimentacao.Moeda;
 import br.com.bfsm.domain.movimentacao.Movimentacoes;
 import br.com.bfsm.infra.exception.MovimentacoesException;
 import br.com.bfsm.infra.exception.ParametrosAusentesException;
@@ -53,6 +58,9 @@ public class MovimentacaoController {
 	@Autowired
 	ClienteRepository clienteRepo;
 	
+	@Autowired
+	private PagedResourcesAssembler<DetalhesMovimentacao> paged;
+	
 	private static final Logger log = LoggerFactory.getLogger(MovimentacaoController.class);
 	
 	
@@ -60,19 +68,28 @@ public class MovimentacaoController {
 	public ResponseEntity cadastrar(@RequestBody DadosCadastroMovimentacao movimentacoesDados, 
 			UriComponentsBuilder uriBuilder) {
 		
-		log.info("Valores recebidos: [Tipo] [Data] [Valor] [IdCliente]" + movimentacoesDados.toString());
+		log.info("Valores recebidos: []" + movimentacoesDados.toString());
 		
 		Cliente cliente = new Cliente();
+		Moeda moeda = new Moeda();
+		Categoria categoria = new Categoria();
 		Movimentacoes movimentacoes = new Movimentacoes(movimentacoesDados);
 		
-		cliente.setId(movimentacoesDados.clienteId());
+		cliente.setId(movimentacoesDados.clienteAId());
+		moeda.setId(movimentacoesDados.moedaId());
+		categoria.setId(movimentacoesDados.categoriaId());
 
 		movimentacoes.setCliente(cliente);
+		movimentacoes.setCategoria(categoria);
+		movimentacoes.setMoeda(moeda);
 		
 		try {
-			movimentacoesService.salvarMovimentacao(movimentacoes);
+			movimentacoesService.salvarMovimentacao(movimentacoes, movimentacoesDados.clienteBId());
 			var uri = uriBuilder.path("/movimentacoes/{id}").buildAndExpand(movimentacoes.getId()).toUri();
 			return ResponseEntity.created(uri).body(new DetalhesMovimentacao(movimentacoes));
+		} catch (EntityNotFoundException e) {
+			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Cliente não localizado: " + e.getMessage());
+			return ResponseEntity.of(forStatusAndDetail).build();
 		} catch (MovimentacoesException e) {
 			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), "Erro para adicionar: " + e.getMessage());
 			return ResponseEntity.of(forStatusAndDetail).build();
@@ -82,7 +99,7 @@ public class MovimentacaoController {
 		}
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping()
 	public ResponseEntity buscar(@RequestParam Long movimentacaoId) {
 		
 		log.info("Iniciando busca do id: [id] " + movimentacaoId);
@@ -104,7 +121,8 @@ public class MovimentacaoController {
 		
 	}
 	
-	@DeleteMapping("{id}")
+	
+	@DeleteMapping()
 	public ResponseEntity remover(@RequestParam Long movimentacaoId) {
 		
 		log.info("Iniciando remocao do id: [id] " + movimentacaoId);
@@ -132,7 +150,7 @@ public class MovimentacaoController {
 		Movimentacoes movimentacao = new Movimentacoes(movimentacaoAtualizacao);
 		
 		try {
-			movimentacoesService.atualizar(movimentacao);
+			movimentacoesService.atualizar(movimentacao, movimentacaoAtualizacao.clienteBId());
 			var uri = uriBuilder.path("/movimentacao/{id}").buildAndExpand(movimentacao.getId()).toUri();
 			return ResponseEntity.created(uri).body(new DetalhesMovimentacao(movimentacao));
 		} catch (MovimentacoesException e) {
@@ -152,7 +170,8 @@ public class MovimentacaoController {
 			@RequestParam(required = false, defaultValue = "") String dataFim,
 			@RequestParam(required = false) Long clienteId, 
 			@RequestParam(required = false) Long moedaId,
-			@RequestParam(required = false) Long categoriaId
+			@RequestParam(required = false) Long categoriaId,
+			@RequestParam(required = true ,defaultValue = "true") boolean ativo
 			) throws ParametrosAusentesException {
 		
 		log.info("Iniciando criação do relatório");
@@ -161,7 +180,8 @@ public class MovimentacaoController {
 			throw new ParametrosAusentesException("Parametro(s) inválidos ou não enviados!");
 		}
 		
-		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, dataInicio,dataFim, clienteId, moedaId, categoriaId);
+
+		MockMultipartFile relatorio = movimentacoesService.relatorio(movimentacaoId, dataInicio,dataFim, clienteId, moedaId, categoriaId, ativo);
 		
 		if(relatorio != null) {
 			log.info("relatório gerado " + relatorio.getName());
@@ -183,7 +203,6 @@ public class MovimentacaoController {
 			
 			return new ResponseEntity<InputStreamResource>(relatorioFinal, headers, HttpStatus.OK);
 		} else {
-			InputStreamResource relatorioFinal = null;
 			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Não foi localizado nenhuma movimentação com os dados fornecidos");
 			return ResponseEntity.of(forStatusAndDetail).build();
 		}
@@ -195,7 +214,8 @@ public class MovimentacaoController {
 			@RequestParam(required = false, defaultValue = "") String dataFim, 
 			@RequestParam(required = false) Long clienteId, 
 			@RequestParam(required = false) Long moedaId, @RequestParam(required = false) Long categoriaId,
-			Pageable p) throws ParametrosAusentesException {
+			@PageableDefault(page = 0, size = 5) @SortDefault.SortDefaults({@SortDefault(sort = "id", direction = Sort.Direction.DESC)}) Pageable p,
+			@RequestParam(required = false, defaultValue = "true") boolean ativo) throws ParametrosAusentesException {
 		
 		log.info("Iniciando criação do relatório");
 		
@@ -205,19 +225,41 @@ public class MovimentacaoController {
 			
 		try {
 			Pageable page = PageRequest.of(p.getPageNumber(), p.getPageSize());
-			Page<DetalhesMovimentacao> relatorio = movimentacoesService.relatorioResumo(page, movimentacaoId, dataInicio,dataFim, clienteId, moedaId, categoriaId);
+			Page<DetalhesMovimentacao> relatorio = movimentacoesService.relatorioResumo(page, movimentacaoId, dataInicio,dataFim, clienteId, 
+					moedaId, categoriaId, ativo);
 			log.info("relatório gerado ");
-			return ResponseEntity.ok().body(relatorio);
+			return ResponseEntity.ok().body(paged.toModel(relatorio));
 		} catch (EntityNotFoundException e) {
 			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Não foi localizado nenhuma movimentação com os dados fornecidos");
 			return ResponseEntity.of(forStatusAndDetail).build();
 		} catch (Exception e) {
 			log.error("Erro para gerar relatorio final: " + e.getMessage());
 			e.printStackTrace();
-			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), "Erro para gerar relatório: " + e.getMessage());
+			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), "Erro para gerar relatório: " + e.getMessage());
 			return ResponseEntity.of(forStatusAndDetail).build();
 		}
 			
+	}
+	
+	@GetMapping(value = "buscar/mock")
+	public ResponseEntity buscarMock() {
+		
+		log.info("Iniciando busca do mock" );
+		
+		List<Movimentacoes> buscarMovimentacaoPeloId;
+		try {
+			buscarMovimentacaoPeloId = movimentacoesService.buscarMovimentacaoPeloIdMock();
+			log.info("O mock: " + buscarMovimentacaoPeloId + " foi localizado");
+			List<DetalhesMovimentacao> detalhesList = buscarMovimentacaoPeloId.stream()
+			.map(m -> new DetalhesMovimentacao(m))
+			.collect(Collectors.toList());
+			return ResponseEntity.ok().body(detalhesList);
+		} catch (Exception e) {
+			log.error("Erro ao buscar mock");
+			ProblemDetail forStatusAndDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), "Erro ao buscar mock: " + e.getMessage());
+			return ResponseEntity.of(forStatusAndDetail).build();
+		}
+		
 	}
 	
 

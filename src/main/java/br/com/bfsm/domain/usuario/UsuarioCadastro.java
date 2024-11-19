@@ -11,7 +11,7 @@ public record UsuarioCadastro(
 		String senha,
 		
 		@NotNull
-		int ativo
+		boolean ativo
 		) {
 
 }

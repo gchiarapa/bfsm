@@ -1,13 +1,17 @@
 package br.com.bfsm.domain.cliente;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import org.hibernate.type.NumericBooleanConverter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.bfsm.domain.movimentacao.Movimentacoes;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +37,7 @@ public class Cliente {
 		this.endereco = cliente.getEndereco();
 		this.saldo = cliente.getSaldo();
 		this.id = cliente.getId();
-		this.ativo = cliente.getAtivo();
+		this.ativo = cliente.isAtivo();
 	}
 	
 	public Cliente(AtualizaCliente clienteAtualizacao) {
@@ -47,7 +51,7 @@ public class Cliente {
 		this.nome = cadastroCliente.nome();
 		this.endereco = cadastroCliente.endereco();
 		this.saldo = cadastroCliente.saldo();
-		this.ativo = 1;
+		this.ativo = true;
 	}
 
 	@Id
@@ -58,12 +62,17 @@ public class Cliente {
 	
 	String endereco;
 	
-	String saldo;
+	BigDecimal saldo;
 	
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
 	@JsonIgnore
 	List<Movimentacoes> movimentacoes;
 	
-    int ativo;
+	@Convert(converter = NumericBooleanConverter.class)
+    boolean ativo;
+	
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+	@JsonIgnore
+	List<SaldoHistorico> saldoHistorico;
 
 }

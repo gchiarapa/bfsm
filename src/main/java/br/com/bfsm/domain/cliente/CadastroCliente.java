@@ -1,5 +1,7 @@
 package br.com.bfsm.domain.cliente;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +14,7 @@ public record CadastroCliente(
 		String endereco,
 		
 		@NotNull
-		String saldo,
+		BigDecimal saldo,
 		
 		@NotEmpty
 	    int ativo

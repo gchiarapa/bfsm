@@ -9,15 +9,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.bfsm.domain.cliente.Cliente;
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 	
 	@Modifying
     @Query("UPDATE Cliente c SET c.ativo = :ativo WHERE c.id = :id")
-    int updateClienteAtivoById(@Param("ativo") int ativo, @Param("id") Long id);
+	@Transactional
+    int updateClienteAtivoById(@Param("ativo") boolean ativo, @Param("id") Long id);
 
-	Optional<Cliente> findClienteByIdAndAtivo(Long clienteId, int ativo);
+	Optional<Cliente> findClienteByIdAndAtivo(Long clienteId, Boolean ativo);
 	
 
 }

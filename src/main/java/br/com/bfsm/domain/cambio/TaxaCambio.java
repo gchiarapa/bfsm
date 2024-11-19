@@ -1,5 +1,6 @@
 package br.com.bfsm.domain.cambio;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public record TaxaCambio (
@@ -7,7 +8,7 @@ public record TaxaCambio (
 	    long timestamp,
 	    String base,
 //	    String date,
-	    Map<String, Double> rates
+	    Map<String, BigDecimal> rates
 	    )
 {
 

@@ -28,16 +28,6 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		        http
-//	            .authorizeHttpRequests(authorize -> authorize
-//    				.requestMatchers("/cliente/**", "/movimentacoes/**")
-//    				.permitAll()
-//	                .anyRequest().authenticated()
-//	            )
-//	            .formLogin(formLogin -> formLogin
-////	                .loginPage("/login")
-//	                .permitAll()
-//	            )
-//	            .logout((logout) -> logout.permitAll())
 	            .csrf(csrf -> csrf.disable())
 	            .sessionManagement(sm -> 
 	            {
@@ -47,18 +37,13 @@ public class WebSecurityConfig {
 						.authorizeHttpRequests(authorize -> authorize
 								.requestMatchers(HttpMethod.POST,"/login").permitAll()
 								.requestMatchers("/swagger-ui/**", "swagger-ui**", "/v3/api-docs/**", "/v3/api-docs**").permitAll()
-								.requestMatchers(HttpMethod.DELETE,"/cliente").hasRole("Admin")
-								.requestMatchers(HttpMethod.DELETE,"/movimentacoes").hasRole("Admin")
-								.requestMatchers(HttpMethod.DELETE,"/usuario").hasRole("Admin")
 								.anyRequest().authenticated()
 								.and()
 								.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class));
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				});
-//		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
 		return http.build();
 	}

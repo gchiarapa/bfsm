@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -28,7 +28,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -84,9 +83,9 @@ public class MovimentacaoControllerTest {
     @BeforeEach
     public void setUp() {
         data = LocalDateTime.now();
-        movimentacao = new Movimentacoes(1L, "Debito", data, "100", new Cliente(), new Moeda(), new Categoria(), new TaxaCambio(0, null, null));
-        cadastroMovimentacao = new DadosCadastroMovimentacao("Debito", data, "1000", 1L, new Moeda(), new Categoria());
-        atualizarMovimentacoes = new AtualizarMovimentacao(1L, "Debito", data, "1000", 1L, new Moeda(), new Categoria());
+        movimentacao = new Movimentacoes(1L, "Debito", data, new BigDecimal("100"), new Cliente(), new Moeda(), new Categoria(), new TaxaCambio(0, null, null));
+        cadastroMovimentacao = new DadosCadastroMovimentacao("Debito", data, new BigDecimal("1000"), 1L, 1L, 1L, 1L);
+        atualizarMovimentacoes = new AtualizarMovimentacao(1L, "Debito", data, new BigDecimal("1000"), 1L, 1L, 1L, 1L);
     }
 
     @Test

@@ -54,7 +54,7 @@ public class UsuarioController {
 			}
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping()
 	public ResponseEntity buscar(@RequestParam Long usuarioId, UriComponentsBuilder uriBuilder) {
 		
 		log.info("Iniciando busca do id: [id] " + usuarioId);
@@ -72,7 +72,7 @@ public class UsuarioController {
 				
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping()
 	public ResponseEntity remover(@RequestParam Long usuarioId) {
 		
 		log.info("Iniciando remocao do id: [id] " + usuarioId);

@@ -1,5 +1,6 @@
 package br.com.bfsm.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.bfsm.domain.cliente.CadastroCliente;
 import br.com.bfsm.domain.cliente.Cliente;
+import br.com.bfsm.domain.cliente.SaldoHistorico;
 import br.com.bfsm.infra.exception.ClienteException;
 import br.com.bfsm.repository.ClienteRepository;
+import br.com.bfsm.repository.SaldoHistoricoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -20,6 +23,9 @@ public class ClienteService {
 
 	@Autowired
 	ClienteRepository clienteRepo;
+	
+	@Autowired
+	SaldoHistoricoRepository saldoRepo;
 
 	public Cliente salvar(CadastroCliente cadastroCliente) throws ClienteException {
 		
@@ -27,6 +33,11 @@ public class ClienteService {
 
 		try {
 			clienteRepo.save(cliente);
+			SaldoHistorico saldoHist = new SaldoHistorico();
+			saldoHist.setCliente(cliente);
+			saldoHist.setData(LocalDateTime.now());
+			saldoHist.setValor(cliente.getSaldo());
+			saldoRepo.save(saldoHist);
 			log.info("cliente cadastrado com sucesso!");
 			return cliente;
 		} catch (Exception e) {
@@ -36,7 +47,7 @@ public class ClienteService {
 
 	}
 
-	public Cliente buscarClientePeloId(Long clienteId, int ativo) throws ClienteException {
+	public Cliente buscarClientePeloId(Long clienteId, boolean ativo) throws ClienteException {
 
 		Optional<Cliente> clienteExiste = java.util.Optional.empty();
 		Cliente cliente = null;
@@ -59,7 +70,7 @@ public class ClienteService {
 		boolean exists = clienteRepo.existsById(clienteId);
 		if (exists) {
 //			clienteRepo.deleteById(clienteId);
-			clienteRepo.updateClienteAtivoById((byte) 0, clienteId);
+			clienteRepo.updateClienteAtivoById(false, clienteId);
 			return status = "OK";
 		} else {
 			log.info("cliente não localizado !");
@@ -73,6 +84,11 @@ public class ClienteService {
 		boolean existsById = clienteRepo.existsById(cliente.getId());
 		if (existsById) {
 			clienteRepo.save(cliente);
+			SaldoHistorico saldoHist = new SaldoHistorico();
+			saldoHist.setCliente(cliente);
+			saldoHist.setData(LocalDateTime.now());
+			saldoHist.setValor(cliente.getSaldo());
+			saldoRepo.save(saldoHist);
 			log.info("cliente atualizado com sucesso!");
 			return cliente;
 		} else {

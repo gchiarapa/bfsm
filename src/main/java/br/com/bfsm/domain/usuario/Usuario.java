@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.type.NumericBooleanConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.bfsm.domain.permissao.Permissao;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +36,7 @@ public class Usuario implements UserDetails {
 	public Usuario(@Valid UsuarioCadastro cadastroUsuario) {
 		this.login = cadastroUsuario.login();
 		this.senha = cadastroUsuario.senha();
-		this.ativo = 1;
+		this.ativo = cadastroUsuario.ativo();
 	}
 
 	public Usuario(AtualizaUsuario usuarioAtualizacao) {
@@ -57,7 +59,9 @@ public class Usuario implements UserDetails {
 	
 	String senha;
 	
-	int ativo;
+	@Convert(converter = NumericBooleanConverter.class)
+    boolean ativo;
+
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "api_usuario_permissoes", schema = "bank",

@@ -1,5 +1,7 @@
 package br.com.bfsm.domain.cliente;
 
+import java.math.BigDecimal;
+
 public record DetalhesCliente(
 		
 		Long id, 
@@ -8,12 +10,12 @@ public record DetalhesCliente(
 		
 		String endereco,
 		
-		String saldo,
-		int ativo
+		BigDecimal saldo,
+		boolean ativo
 		) {
 
 	public DetalhesCliente(Cliente cliente) {
-		this(cliente.getId(), cliente.getNome(), cliente.getEndereco(), cliente.getSaldo(), cliente.getAtivo());
+		this(cliente.getId(), cliente.getNome(), cliente.getEndereco(), cliente.getSaldo(), cliente.isAtivo());
 	}
 
 }

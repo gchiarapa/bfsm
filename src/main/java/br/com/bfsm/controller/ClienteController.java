@@ -57,8 +57,8 @@ public class ClienteController {
 		
 	}
 	
-	@GetMapping("{id}")
-	public ResponseEntity buscar(@RequestParam Long clienteId, @RequestParam(defaultValue = "1") int ativo) {
+	@GetMapping()
+	public ResponseEntity buscar(@RequestParam Long clienteId, @RequestParam(defaultValue = "1") boolean ativo) {
 		
 		log.info("Iniciando busca do id: [id] " + clienteId);
 		
@@ -79,7 +79,7 @@ public class ClienteController {
 		
 	}
 	
-	@DeleteMapping("{id}")
+	@DeleteMapping()
 	public ResponseEntity remover(@RequestParam Long clienteId) {
 		
 		log.info("Iniciando remocao do id: [id] " + clienteId);
